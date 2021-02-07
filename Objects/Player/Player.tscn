@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Assets/Sprites/0x72_16x16DungeonTileset.v1.png" type="Texture" id=1]
 [ext_resource path="res://Assets/Scripts/PlayerScripts/PlayerScript.gd" type="Script" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://Assets/Scripts/PlayerScripts/CameraScript.gd" type="Script" id=4]
 [ext_resource path="res://Assets/Scripts/PlayerScripts/InventoryScript.gd" type="Script" id=5]
 [ext_resource path="res://Objects/Player/GuiCell.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Assets/Scripts/PlayerScripts/HealthSystem.gd" type="Script" id=7]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 3.25917
@@ -147,20 +148,30 @@ __meta__ = {
 
 [node name="Currency" type="Node" parent="GUI"]
 
-[node name="Health" type="Node" parent="GUI"]
+[node name="HealthSystem" type="Node2D" parent="GUI"]
+script = ExtResource( 7 )
 
 [node name="Inventory" type="Node2D" parent="GUI"]
+scale = Vector2( 1.5, 1.5 )
 script = ExtResource( 5 )
 
 [node name="Cell00" parent="GUI/Inventory" instance=ExtResource( 6 )]
+margin_left = 47.25
+margin_top = 9.0
+margin_right = 47.25
+margin_bottom = 9.0
 
 [node name="Cell01" parent="GUI/Inventory" instance=ExtResource( 6 )]
-margin_left = 40.0
-margin_right = 40.0
+margin_left = 87.25
+margin_top = 9.0
+margin_right = 87.25
+margin_bottom = 9.0
 
 [node name="Cell02" parent="GUI/Inventory" instance=ExtResource( 6 )]
-margin_left = 75.7272
-margin_right = 75.7272
+margin_left = 122.977
+margin_top = 9.0
+margin_right = 122.977
+margin_bottom = 9.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Idle = SubResource( 5 )

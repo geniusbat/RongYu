@@ -17,7 +17,7 @@ onready var dashingTimer = $DashingTimer
 onready var receiveDamageTimer = $ReceiveDamageTimer
 onready var knockbackTimer = $KnockbackTimer
 onready var inventory = $GUI/Inventory
-onready var healthNode = $GUI/Health
+onready var healthSystem = $GUI/HealthSystem
 onready var currency = $GUI/Currency
 onready var items = $Items
 var weapon
@@ -30,6 +30,7 @@ var immobile:bool
 var notInvulnerable #Only used for items
 
 #Stats
+export(int) var maxHealth = 3
 var health:int
 var critical:int
 var armor:int
@@ -53,10 +54,12 @@ func _ready():
 	armor=10
 	luck=20
 	critical=0
+	#Initialize maxHealth drawen
+	healthSystem.MaxHealthChanged(maxHealth)
 	randomize()
 	if $Weapon.get_child_count()>0:
 		weapon=$Weapon.get_child(0)
-	#Create weapon, failsafe option
+	#Create weapon, failsafe option. TODO
 	else:
 		pass
 
@@ -90,7 +93,11 @@ func _unhandled_input(event):
 					el.queue_free()
 				#The thing is not a weapon
 				else:
-					pass
+					AddItem(el)
+	#Testing 
+#	elif event.is_action_pressed("ui_accept"):
+#		#Add health
+#		healthSystem.MaxHealthChanged(1)
 
 func _physics_process(_delta):
 	#DASHING
@@ -198,15 +205,16 @@ func ReceiveDamageTimerTimeout():
 
 #RANDOM FUNCTIONS
 #Tries to add item to inventory and itemlist. Item is the item to add not the floor one
-func AddItem(item) -> bool:
+func AddItem(floorItem):
 	if items.get_child_count()<inventorySize:
+		var item = load(floorItem.itemInfo.item).instance()
 		#Pick up
 		items.add_child(item)
 		inventory.AddItem(item)
-		return true
-	else:
-		return false
-
+		floorItem.queue_free()
+#Call this whenever the health changes
+func HealthChanged():
+	healthSystem.HealthChanged(health)
 #INFLUENCE
 #Asked when anenemy tries to get inside area
 func CanEnemyGoIn():
