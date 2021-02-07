@@ -10,3 +10,4 @@ displayName = "Whetstone"
 floorSprite = ExtResource( 2 )
 sprite = ExtResource( 2 )
 item = "res://Objects/Items/Whetstone.tscn"
+description = "Increases damage done"

@@ -19,6 +19,7 @@ onready var knockbackTimer = $KnockbackTimer
 onready var inventory = $GUI/Inventory
 onready var healthNode = $GUI/Health
 onready var currency = $GUI/Currency
+onready var items = $Items
 var weapon
 #Misc states
 var canReceiveDamage:bool #Used for non-item cases
@@ -33,6 +34,7 @@ var health:int
 var critical:int
 var armor:int
 var luck:int
+export(int) var inventorySize:int = 3
 #Influence
 var enemiesInsideInfluence:int
 export(int) var maxEnemiesInsideInfluence=3
@@ -193,6 +195,17 @@ func KnockbackTimerTimeout():
 #Player can be damaged again
 func ReceiveDamageTimerTimeout():
 	canReceiveDamage=true
+
+#RANDOM FUNCTIONS
+#Tries to add item to inventory and itemlist. Item is the item to add not the floor one
+func AddItem(item) -> bool:
+	if items.get_child_count()<inventorySize:
+		#Pick up
+		items.add_child(item)
+		inventory.AddItem(item)
+		return true
+	else:
+		return false
 
 #INFLUENCE
 #Asked when anenemy tries to get inside area
