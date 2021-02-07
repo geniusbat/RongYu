@@ -1,0 +1,173 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://Assets/Sprites/0x72_16x16DungeonTileset.v1.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Scripts/PlayerScripts/PlayerScript.gd" type="Script" id=2]
+[ext_resource path="res://Objects/Player/PlayerWeapons/TestWeapon.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Assets/Scripts/PlayerScripts/CameraScript.gd" type="Script" id=4]
+[ext_resource path="res://Assets/Scripts/PlayerScripts/InventoryScript.gd" type="Script" id=5]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 3.25917
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 5, 7.5 )
+
+[sub_resource type="CircleShape2D" id=3]
+radius = 94.5911
+
+[sub_resource type="CircleShape2D" id=4]
+radius = 180.563
+
+[sub_resource type="Animation" id=5]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+
+[sub_resource type="Animation" id=6]
+length = 1.2
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3, 0.6, 0.9, 1.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 1, -0.25 ), Vector2( 0, 0 ), Vector2( -1, -0.25 ), Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.3, 0.6, 0.9, 1.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ 0.0, 3.0, 0.0, -3.0, 0.0 ]
+}
+
+[sub_resource type="CircleShape2D" id=7]
+radius = 14.0547
+
+[node name="Player" type="KinematicBody2D"]
+collision_layer = 4
+collision_mask = 34
+script = ExtResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 3, 65, 10, 15 )
+
+[node name="MoveCollision" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 3.8 )
+shape = SubResource( 1 )
+
+[node name="Weapon" type="Node2D" parent="."]
+
+[node name="TestWeapon" parent="Weapon" instance=ExtResource( 3 )]
+
+[node name="Camera" type="Camera2D" parent="."]
+current = true
+zoom = Vector2( 0.5, 0.5 )
+smoothing_speed = 8.0
+script = ExtResource( 4 )
+
+[node name="DashingTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="KnockbackTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="ReceiveDamageTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 2147483656
+collision_mask = 32
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2( 0, -0.5 )
+shape = SubResource( 2 )
+
+[node name="InfluenceAreaIn" type="Area2D" parent="."]
+visible = false
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InfluenceAreaIn"]
+shape = SubResource( 3 )
+
+[node name="InfluenceAreaOut" type="Area2D" parent="."]
+visible = false
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InfluenceAreaOut"]
+shape = SubResource( 4 )
+
+[node name="Entity" type="Node2D" parent="."]
+
+[node name="Items" type="Node2D" parent="."]
+
+[node name="GUI" type="CanvasLayer" parent="."]
+
+[node name="FPS" type="Label" parent="GUI"]
+margin_right = 40.0
+margin_bottom = 14.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Currency" type="Node" parent="GUI"]
+
+[node name="Health" type="Node" parent="GUI"]
+
+[node name="Inventory" type="Node2D" parent="GUI"]
+script = ExtResource( 5 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Idle = SubResource( 5 )
+anims/Walking = SubResource( 6 )
+
+[node name="Vision" type="RayCast2D" parent="."]
+enabled = true
+collision_mask = 130
+collide_with_areas = true
+
+[node name="InteractArea" type="Area2D" parent="."]
+visible = false
+collision_mask = 256
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
+shape = SubResource( 7 )
+[connection signal="timeout" from="DashingTimer" to="." method="DashingTimeout"]
+[connection signal="timeout" from="KnockbackTimer" to="." method="KnockbackTimerTimeout"]
+[connection signal="timeout" from="ReceiveDamageTimer" to="." method="ReceiveDamageTimerTimeout"]
+[connection signal="body_entered" from="InfluenceAreaIn" to="." method="BodyEnteredInfluence"]
+[connection signal="body_exited" from="InfluenceAreaOut" to="." method="BodyExitedInfluence"]

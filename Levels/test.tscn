@@ -1,0 +1,38 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Objects/Player/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Assets/Sprites/shieldIcon.png" type="Texture" id=2]
+[ext_resource path="res://Objects/Enemies/TestEnemy.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Objects/Misc/Wall.tscn" type="PackedScene" id=4]
+
+[sub_resource type="NavigationPolygon" id=1]
+vertices = PoolVector2Array( 971.988, 314.41, 1101.36, 308.854, 846.583, 396.955, 405.286, 283.456, 710, 420, 340.202, 818.41, 707.5, 493.5, 864, 482.5, 782.5, 486, 781, 420.5, 945.002, 366.001, 785, 494.5, 789.5, 558, 1363.28, 871.588, 866, 557.5, 1152.95, 273.138 )
+polygons = [ PoolIntArray( 0, 1, 2 ), PoolIntArray( 3, 0, 2, 4 ), PoolIntArray( 5, 3, 4, 6 ), PoolIntArray( 7, 8, 9, 10 ), PoolIntArray( 6, 11, 12, 5 ), PoolIntArray( 13, 5, 12, 14 ), PoolIntArray( 15, 13, 14, 7, 10 ) ]
+outlines = [ PoolVector2Array( 1152.95, 273.138, 1363.28, 871.588, 340.202, 818.41, 405.286, 283.456, 971.988, 314.41, 1101.36, 308.854, 844.202, 402.511, 710, 420, 707.5, 493.5, 785, 494.5, 789.5, 558, 866, 557.5, 864, 482.5, 782.5, 486, 781.5, 416.004, 945.002, 366.001 ) ]
+
+[node name="Level" type="YSort"]
+
+[node name="Navigation" type="Navigation2D" parent="."]
+
+[node name="TestEnemy" parent="Navigation" instance=ExtResource( 3 )]
+position = Vector2( 878.137, 519.672 )
+health = 2
+
+[node name="TestEnemy2" parent="Navigation" instance=ExtResource( 3 )]
+position = Vector2( 919.118, 468 )
+
+[node name="shieldIcon" type="Sprite" parent="Navigation"]
+position = Vector2( 695.787, 499.335 )
+texture = ExtResource( 2 )
+
+[node name="Wall" parent="Navigation" instance=ExtResource( 4 )]
+position = Vector2( 823.487, 522.818 )
+
+[node name="Wall2" parent="Navigation" instance=ExtResource( 4 )]
+position = Vector2( 743.307, 461.124 )
+
+[node name="NavigationPolygonInstance" type="NavigationPolygonInstance" parent="Navigation"]
+navpoly = SubResource( 1 )
+
+[node name="Player" parent="." instance=ExtResource( 1 )]
+position = Vector2( 755.925, 516.255 )

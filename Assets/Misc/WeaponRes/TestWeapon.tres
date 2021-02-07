@@ -1,0 +1,14 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Scripts/Singletons/WeaponRes.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Sprites/Player/PlayerWeapons/sword.png" type="Texture" id=2]
+
+[resource]
+script = ExtResource( 1 )
+innerName = "testWeapon"
+displayName = "Testing Weapon"
+weaponNode = "res://Objects/Player/PlayerWeapons/TestWeapon.tscn"
+floorSprite = ExtResource( 2 )
+weaponSprite = ExtResource( 2 )
+damage = 1
+movementSlow = 0.6
