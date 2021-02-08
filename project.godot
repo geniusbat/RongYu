@@ -127,6 +127,7 @@ left_click={
 2d_physics/layer_7="Enemy"
 2d_physics/layer_8="DamageHitbox"
 2d_physics/layer_9="InteractAreas"
+2d_physics/layer_10="DeadEnemy"
 
 [rendering]
 

@@ -1,38 +1,48 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Objects/Player/Player.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Assets/Sprites/shieldIcon.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Sprites/Arena.png" type="Texture" id=2]
 [ext_resource path="res://Objects/Enemies/TestEnemy.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Objects/Misc/Wall.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Assets/Scripts/Misc/OutsideArena.gd" type="Script" id=5]
+[ext_resource path="res://NavPoligon.tres" type="NavigationPolygon" id=6]
 
-[sub_resource type="NavigationPolygon" id=1]
-vertices = PoolVector2Array( 971.988, 314.41, 1101.36, 308.854, 846.583, 396.955, 405.286, 283.456, 710, 420, 340.202, 818.41, 707.5, 493.5, 864, 482.5, 782.5, 486, 781, 420.5, 945.002, 366.001, 785, 494.5, 789.5, 558, 1363.28, 871.588, 866, 557.5, 1152.95, 273.138 )
-polygons = [ PoolIntArray( 0, 1, 2 ), PoolIntArray( 3, 0, 2, 4 ), PoolIntArray( 5, 3, 4, 6 ), PoolIntArray( 7, 8, 9, 10 ), PoolIntArray( 6, 11, 12, 5 ), PoolIntArray( 13, 5, 12, 14 ), PoolIntArray( 15, 13, 14, 7, 10 ) ]
-outlines = [ PoolVector2Array( 1152.95, 273.138, 1363.28, 871.588, 340.202, 818.41, 405.286, 283.456, 971.988, 314.41, 1101.36, 308.854, 844.202, 402.511, 710, 420, 707.5, 493.5, 785, 494.5, 789.5, 558, 866, 557.5, 864, 482.5, 782.5, 486, 781.5, 416.004, 945.002, 366.001 ) ]
+[node name="Level" type="Node2D"]
 
-[node name="Level" type="YSort"]
+[node name="ArenaNode" type="Node2D" parent="."]
+z_index = -1
+z_as_relative = false
 
-[node name="Navigation" type="Navigation2D" parent="."]
-
-[node name="TestEnemy" parent="Navigation" instance=ExtResource( 3 )]
-position = Vector2( 878.137, 519.672 )
-health = 2
-
-[node name="TestEnemy2" parent="Navigation" instance=ExtResource( 3 )]
-position = Vector2( 919.118, 468 )
-
-[node name="shieldIcon" type="Sprite" parent="Navigation"]
-position = Vector2( 695.787, 499.335 )
+[node name="Arena" type="Sprite" parent="ArenaNode"]
+position = Vector2( 0, 125.475 )
+z_index = -10
+z_as_relative = false
 texture = ExtResource( 2 )
 
-[node name="Wall" parent="Navigation" instance=ExtResource( 4 )]
-position = Vector2( 823.487, 522.818 )
+[node name="OutsideArena" type="Area2D" parent="ArenaNode"]
+position = Vector2( 0, 125.475 )
+collision_mask = 2147484228
+script = ExtResource( 5 )
 
-[node name="Wall2" parent="Navigation" instance=ExtResource( 4 )]
-position = Vector2( 743.307, 461.124 )
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="ArenaNode/OutsideArena"]
+visible = false
+polygon = PoolVector2Array( 69, -266.9, 181, -261.9, 181, -260.8, 277, -251.8, 277, -250.7, 403, -229.7, 403, -228.5, 443, -219.6, 443, -218.5, 499, -201.5, 499, -200.4, 523, -191.4, 523, -190.2, 559, -172.2, 559, -170.1, 573, -162.2, 573, -159.8, 589, -143.8, 589, -141.5, 596, -127.5, 596, -109, 594.4, -109, 588.4, -93, 586.4, -93, 584.4, -87, 581.9, -87, 571.9, -75, 569.6, -75, 547.6, -59, 545.5, -59, 497.5, -36, 493.4, -36, 441.3, -18, 435.1, -18, 373.3, -2, 365, -2, 317.2, 8, 305.3, 8, 223.1, 20, 205.3, 20, 179.2, 24, 153.1, 24, 67.1, 30, -67, 30, -119, 28, -119, 26.9, -261, 15.8, -261, 14.8, -319, 7.79999, -319, 6.70001, -403, -8.29999, -403, -9.5, -443, -18.4, -443, -19.5, -499, -36.5, -499, -37.7, -549, -59.7, -549, -61.9, -573, -75.9, -573, -78.1, -585, -88.1, -585, -90.4, -594, -104.4, -594, -109, -596.2, -129, -594.4, -129, -588.4, -145, -586.4, -145, -584.4, -151, -581.9, -151, -571.9, -163, -569.6, -163, -547.6, -179, -545.5, -179, -497.5, -202, -493.4, -202, -441.3, -220, -435.1, -220, -373.3, -236, -365, -236, -317.2, -246, -305.3, -246, -223.1, -258, -205.2, -258, -151.1, -264, -119.1, -264, -69, -266.9, -69, -268, 69, -268 )
 
-[node name="NavigationPolygonInstance" type="NavigationPolygonInstance" parent="Navigation"]
-navpoly = SubResource( 1 )
+[node name="YSort" type="YSort" parent="."]
 
-[node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 755.925, 516.255 )
+[node name="Navigation" type="Navigation2D" parent="YSort"]
+
+[node name="NavigationPolygonInstance" type="NavigationPolygonInstance" parent="YSort/Navigation"]
+visible = false
+navpoly = ExtResource( 6 )
+
+[node name="TestEnemy" parent="YSort/Navigation" instance=ExtResource( 3 )]
+position = Vector2( -29.9505, -247.057 )
+health = 1
+
+[node name="Player" parent="YSort" instance=ExtResource( 1 )]
+position = Vector2( -31.792, -141.354 )
+
+[node name="Wall" parent="YSort" instance=ExtResource( 4 )]
+position = Vector2( 38.6725, -63.4254 )
+[connection signal="body_exited" from="ArenaNode/OutsideArena" to="ArenaNode/OutsideArena" method="_on_OutsideArena_body_exited"]
