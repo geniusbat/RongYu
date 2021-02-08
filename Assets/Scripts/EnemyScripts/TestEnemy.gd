@@ -28,6 +28,7 @@ onready var isKnockedback = false
 onready var canReceiveDamage = true
 onready var insideInfluence : bool = false
 onready var rng = RandomNumberGenerator.new()
+onready var coin = preload("res://Objects/Player/Coins.tscn")
 #Remember, we dont have windup as the windup time will be taken into consideration in the weapon animation time
 
 #Mods
@@ -199,6 +200,10 @@ func Die():
 	vision.queue_free()
 	$Line2D.queue_free()
 	$Sprite.rotation_degrees=90
+	var ins = coin.instance()
+	ins.global_position=global_position
+	get_tree().get_root().add_child(ins)
+	$MovementCollision.queue_free()
 #Get path towards global_position of point
 func GetPathTowardsPoint(globalPos:Vector2):
 	return navigation.get_simple_path(position,navigation.to_local(globalPos))

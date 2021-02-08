@@ -74,7 +74,7 @@ func _unhandled_input(event):
 		if weapon!=null:
 			var floorItem = load("res://Objects/Items/FloorItemGeneric.tscn").instance()
 			floorItem.global_position=global_position
-			get_tree().get_root().get_child(0).add_child(floorItem)
+			get_tree().get_root().add_child(floorItem)
 			floorItem.Create(weapon.res,true,(get_global_mouse_position()-global_position).normalized())
 			$Weapon.remove_child(weapon)
 			weapon=null
