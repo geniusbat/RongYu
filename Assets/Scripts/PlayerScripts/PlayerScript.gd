@@ -96,8 +96,8 @@ func _unhandled_input(event):
 					AddItem(el)
 	#Testing 
 #	elif event.is_action_pressed("ui_accept"):
-#		#Add health
-#		healthSystem.MaxHealthChanged(1)
+#		#Add coins
+#		print(DepleteCoin(3))
 
 func _physics_process(_delta):
 	#DASHING
@@ -215,6 +215,13 @@ func AddItem(floorItem):
 #Call this whenever the health changes
 func HealthChanged():
 	healthSystem.HealthChanged(health)
+#Call this when trying to use the currency system, it just redirects it to the correct node
+func AddCoins(amount):
+	currency.AddCoins(amount)
+#Call this when trying to deplete coins, it just redirects
+func DepleteCoin(amount) -> bool:
+	return currency.DepleteCoin(amount)
+
 #INFLUENCE
 #Asked when anenemy tries to get inside area
 func CanEnemyGoIn():
