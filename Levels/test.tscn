@@ -16,12 +16,10 @@ outlines = [ PoolVector2Array( 1152.95, 273.138, 1363.28, 871.588, 340.202, 818.
 
 [node name="TestEnemy" parent="Navigation" instance=ExtResource( 3 )]
 position = Vector2( 878.137, 519.672 )
-SPEED = 1.0
 health = 2
 
 [node name="TestEnemy2" parent="Navigation" instance=ExtResource( 3 )]
 position = Vector2( 919.118, 468 )
-SPEED = 1.0
 
 [node name="shieldIcon" type="Sprite" parent="Navigation"]
 position = Vector2( 695.787, 499.335 )

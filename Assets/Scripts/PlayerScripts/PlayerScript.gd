@@ -43,7 +43,7 @@ export(int) var maxEnemiesInsideInfluence=3
 signal enemyKilled(enemy); signal enemyDamaged(enemy)
 signal playerAttacked
 signal playerDamaged(damage); signal playerDashed; signal playerHealed(healed); signal playerKnocked; signal addedCoins(coins); 
-signal criticalStrike(enemyA); signal armorBlocked; signal sacrificeDone; signal itemSpawned(itemRef)
+signal criticalStrike(enemyA); signal armorBlocked; signal sacrificeDone; signal itemSpawned(item)
 
 func _ready():
 	#Setting up variables

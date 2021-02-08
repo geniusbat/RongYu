@@ -115,7 +115,9 @@ func TimedProcess():
 		randomWalk:
 			DetectPlayerAndFollow()
 		following:
-			pass
+			#Update path towards player randomly
+			if rng.randi_range(0,10) > 3:
+				path = GetPathTowardsPoint(player.global_position)
 		goingAround:
 			#Try to go in if at least some ammount of the path was done
 			if (insideInfluence or player.CanEnemyGoIn())and(path.size()<3):
