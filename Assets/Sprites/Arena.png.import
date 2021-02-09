@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/bar_progress.png-d1df0775301becfb4b79ecdfefe7ccd2.stex"
+path="res://.import/Arena.png-f2b53b5752a63ae834ab04fd36532a34.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/Player/GUI/bar_progress.png"
-dest_files=[ "res://.import/bar_progress.png-d1df0775301becfb4b79ecdfefe7ccd2.stex" ]
+source_file="res://Assets/Sprites/Arena.png"
+dest_files=[ "res://.import/Arena.png-f2b53b5752a63ae834ab04fd36532a34.stex" ]
 
 [params]
 

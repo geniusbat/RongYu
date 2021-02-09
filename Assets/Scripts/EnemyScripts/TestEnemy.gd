@@ -28,6 +28,8 @@ onready var isKnockedback = false
 onready var canReceiveDamage = true
 onready var insideInfluence : bool = false
 onready var rng = RandomNumberGenerator.new()
+onready var coin = preload("res://Objects/Player/Coins.tscn")
+onready var deadEnemy = preload("res://Objects/Enemies/DeadEnemy.tscn")
 #Remember, we dont have windup as the windup time will be taken into consideration in the weapon animation time
 
 #Mods
@@ -142,7 +144,7 @@ func Damage(dam,dir):
 		health-=dam
 		#Die if necessary
 		if health <= 0:
-			Die()
+			Die(dir)
 		else:
 			player.emit_signal("enemyDamaged",self)
 			canReceiveDamage=false
@@ -153,7 +155,7 @@ func DamageWithoutKnockbackAndTimer(dam):
 	health-=dam
 	#Die if necessary
 	if health <= 0:
-		Die()
+		Die(Vector2.ZERO)
 func Knockback(dir):
 	axis=dir
 	isKnockedback=true
@@ -189,16 +191,40 @@ func DetectPlayerAndFollow():
 		path=GetPathTowardsPoint(player.global_position)
 		$Line2D.points=path
 #Die, when dead, delete most of stuff
-func Die():
+func Die(direction):
 	player.emit_signal("enemyKilled",self)
 	state=dead
-	detectionRange.queue_free()
-	damageAgainTimer.queue_free()
-	$Hitbox.queue_free()
-	weapon.queue_free()
-	vision.queue_free()
-	$Line2D.queue_free()
-	$Sprite.rotation_degrees=90
+	var ins = deadEnemy.instance()
+	ins.global_position=global_position
+	ins.get_node("Sprite").texture=$Sprite.texture
+	if $Sprite.region_enabled:
+		ins.get_node("Sprite").region_enabled=true
+		ins.get_node("Sprite").region_rect=$Sprite.region_rect
+	ins.get_node("Sprite").rotation_degrees=90
+	ins.get_node("Sprite").flip_h=$Sprite.flip_h
+	ins.get_node("CollisionShape2D").shape=$MovementCollision.shape
+	ins.dir=direction
+	get_parent().call_deferred("add_child",ins)
+	queue_free()
+#TODO, when enemy falls from arena
+func DieByFalling():
+	print("Enemy fell")
+	player.emit_signal("enemyKilled",self)
+	state=dead
+	var ins = deadEnemy.instance()
+	ins.outside=true
+	ins.moving=false
+	ins.global_position=global_position
+	ins.get_node("Sprite").texture=$Sprite.texture
+	if $Sprite.region_enabled:
+		ins.get_node("Sprite").region_enabled=true
+		ins.get_node("Sprite").region_rect=$Sprite.region_rect
+	ins.get_node("Sprite").rotation_degrees=90
+	ins.get_node("Sprite").flip_h=$Sprite.flip_h
+	ins.get_node("CollisionShape2D").shape=$MovementCollision.shape
+	ins.dir=Vector2.ZERO
+	get_parent().call_deferred("add_child",ins)
+	queue_free()
 #Get path towards global_position of point
 func GetPathTowardsPoint(globalPos:Vector2):
 	return navigation.get_simple_path(position,navigation.to_local(globalPos))
@@ -217,12 +243,5 @@ func PrintState():
 #TIMERS FINISHING
 func KnockbackTimerTimeout():
 	isKnockedback=false
-	#Delete timer and deactivate processes
-	if state==dead:
-		knockbackTimer.queue_free()
-		set_physics_process(false)
-		set_process(false)
-		$TimedProcess.stop()
-		$TimedProcess.queue_free()
 func DamageAgainTimerTimeout():
 	canReceiveDamage=true

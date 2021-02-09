@@ -74,7 +74,7 @@ func _unhandled_input(event):
 		if weapon!=null:
 			var floorItem = load("res://Objects/Items/FloorItemGeneric.tscn").instance()
 			floorItem.global_position=global_position
-			get_tree().get_root().get_child(0).add_child(floorItem)
+			get_tree().get_root().add_child(floorItem)
 			floorItem.Create(weapon.res,true,(get_global_mouse_position()-global_position).normalized())
 			$Weapon.remove_child(weapon)
 			weapon=null
@@ -96,8 +96,8 @@ func _unhandled_input(event):
 					AddItem(el)
 	#Testing 
 #	elif event.is_action_pressed("ui_accept"):
-#		#Add health
-#		healthSystem.MaxHealthChanged(1)
+#		#Add coins
+#		print(DepleteCoin(3))
 
 func _physics_process(_delta):
 	#DASHING
@@ -215,6 +215,13 @@ func AddItem(floorItem):
 #Call this whenever the health changes
 func HealthChanged():
 	healthSystem.HealthChanged(health)
+#Call this when trying to use the currency system, it just redirects it to the correct node
+func AddCoins(amount):
+	currency.AddCoins(amount)
+#Call this when trying to deplete coins, it just redirects
+func DepleteCoin(amount) -> bool:
+	return currency.DepleteCoin(amount)
+
 #INFLUENCE
 #Asked when anenemy tries to get inside area
 func CanEnemyGoIn():

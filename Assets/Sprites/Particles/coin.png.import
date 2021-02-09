@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/bar_progress.png-d1df0775301becfb4b79ecdfefe7ccd2.stex"
+path="res://.import/coin.png-7b56f107ae5a2b803b1009d1bf1173fe.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/Player/GUI/bar_progress.png"
-dest_files=[ "res://.import/bar_progress.png-d1df0775301becfb4b79ecdfefe7ccd2.stex" ]
+source_file="res://Assets/Sprites/Particles/coin.png"
+dest_files=[ "res://.import/coin.png-7b56f107ae5a2b803b1009d1bf1173fe.stex" ]
 
 [params]
 
