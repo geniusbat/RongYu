@@ -10,7 +10,8 @@ func _on_OutsideArena_body_exited(body):
 		get_tree().quit()
 	elif body.has_method("Fall"):
 		body.call_deferred("Fall")
-	else:
+	elif body.is_in_group("Enemies"):
 		if body.state!=4:
-			player.emit_signal("enemyKilled",body)
+			if player!=null:
+				player.emit_signal("enemyKilled",body)
 			body.DieByFalling()
