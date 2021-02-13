@@ -15,6 +15,9 @@ margin_right = 20.0
 margin_bottom = 20.0
 mouse_filter = 2
 texture = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="TextureButton" type="TextureButton" parent="."]
 margin_right = 20.0
@@ -30,3 +33,9 @@ margin_top = 19.656
 margin_right = 75.7272
 margin_bottom = 78.656
 text = "Texto de prueba"
+
+[node name="ExtraPos" type="Control" parent="."]
+margin_left = 10.0
+margin_top = 24.0
+margin_right = 11.0
+margin_bottom = 25.0

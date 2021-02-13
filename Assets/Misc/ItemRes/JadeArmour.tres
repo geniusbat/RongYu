@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Scripts/Items/ItemRes.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Sprites/Items/jadeArmour.png" type="Texture" id=2]
+
+[resource]
+script = ExtResource( 1 )
+innerName = "jadeArmour"
+displayName = "Jade Armor"
+floorSprite = ExtResource( 2 )
+sprite = ExtResource( 2 )
+item = "res://Objects/Items/JadeArmour.tscn"
+description = "It will increase your armour rating."

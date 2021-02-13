@@ -23,7 +23,7 @@ func MaxHealthChanged(maxHealth):
 func HealthChanged(health):
 	for el in get_children():
 		#Show current health
-		if el.get_index<=health:
+		if el.get_index()<health:
 			el.visible=true
 		else:
 			el.visible=false

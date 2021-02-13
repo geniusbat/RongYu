@@ -10,6 +10,7 @@ var isKnocked:bool
 var unKnockable:bool
 var axis:Vector2
 var movement:Vector2
+onready var rng = RandomNumberGenerator.new()
 
 #References
 onready var interactArea = $InteractArea
@@ -33,7 +34,7 @@ var notInvulnerable #Only used for items
 export(int) var maxHealth = 3
 var health:int
 var critical:int
-var armor:int
+var armour:int
 var luck:int
 export(int) var inventorySize:int = 3
 #Influence
@@ -43,7 +44,7 @@ export(int) var maxEnemiesInsideInfluence=3
 signal enemyKilled(enemy); signal enemyDamaged(enemy)
 signal playerAttacked
 signal playerDamaged(damage); signal playerDashed; signal playerHealed(healed); signal playerKnocked; signal addedCoins(coins); 
-signal criticalStrike(enemyA); signal armorBlocked; signal sacrificeDone; signal itemSpawned(item)
+signal criticalStrike(enemyA); signal armourBlocked; signal sacrificeDone; signal itemSpawned(item)
 
 func _ready():
 	#Setting up variables
@@ -51,7 +52,7 @@ func _ready():
 	enemiesInsideInfluence=0; unKnockable=false; notInvulnerable=true
 	dashTime=0.2; windupTime=0.5
 	health=3
-	armor=10
+	armour=10
 	luck=20
 	critical=0
 	#Initialize maxHealth drawen
@@ -95,9 +96,12 @@ func _unhandled_input(event):
 				else:
 					AddItem(el)
 	#Testing 
-#	elif event.is_action_pressed("ui_accept"):
-#		#Add coins
-#		print(DepleteCoin(3))
+	elif event.is_action_pressed("ui_accept"):
+		#Add item
+		var instance = load("res://Objects/Items/FloorItemGeneric.tscn").instance()
+		add_child(instance)
+		instance.Create(load("res://Assets/Misc/ItemRes/BagOfFlowers.tres"),false,Vector2.ZERO)
+		AddItem(instance)
 
 func _physics_process(_delta):
 	#DASHING
@@ -173,15 +177,31 @@ func GetInputDir():
 func Damage(dam,direction):
 	#Make sure player can receive damage
 	if canReceiveDamage and notInvulnerable:
-		health-=dam
-		emit_signal("playerDamaged")
+		canReceiveDamage=false
+		#Try to block with armour
+		if rng.randi_range(0,100)<armour:
+			#Blocked
+			print_debug("Armour blocked")
+			emit_signal("armourBlocked")
+		else:
+			health-=dam
+			HealthChanged()
+			emit_signal("playerDamaged")
 		Knockback(direction)
 		$ReceiveDamageTimer.start()
 func DamageWithoutKnockback(dam):
 	#Make sure player can receive damage
 	if canReceiveDamage and notInvulnerable:
-		health-=dam
-		emit_signal("playerDamaged")
+		canReceiveDamage=false
+		#Try to block with armour
+		if rng.randi_range(0,100)<armour:
+			#Blocked
+			print_debug("Armour blocked")
+			emit_signal("armourBlocked")
+		else:
+			health-=dam
+			HealthChanged()
+			emit_signal("playerDamaged")
 		$ReceiveDamageTimer.start()
 
 #Timers
@@ -204,7 +224,7 @@ func ReceiveDamageTimerTimeout():
 	canReceiveDamage=true
 
 #RANDOM FUNCTIONS
-#Tries to add item to inventory and itemlist. Item is the item to add not the floor one
+#Tries to add item to inventory and itemlist.
 func AddItem(floorItem):
 	if items.get_child_count()<inventorySize:
 		var item = load(floorItem.itemInfo.item).instance()
