@@ -10,5 +10,5 @@ displayName = "Testing Weapon"
 weaponNode = "res://Objects/Player/PlayerWeapons/TestWeapon.tscn"
 floorSprite = ExtResource( 2 )
 weaponSprite = ExtResource( 2 )
-damage = 1
+damage = 2
 movementSlow = 0.6

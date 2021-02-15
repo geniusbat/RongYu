@@ -1,15 +1,17 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Assets/Scripts/PlayerScripts/TestWeapon.gd" type="Script" id=1]
-[ext_resource path="res://Assets/Misc/WeaponRes/TestWeapon.tres" type="Resource" id=3]
+[ext_resource path="res://Assets/Sprites/Player/PlayerWeapons/Knife.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Misc/WeaponRes/Knife.tres" type="Resource" id=3]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 2.85778
-height = 15.8277
+height = 11.3428
 
 [sub_resource type="Animation" id=2]
 resource_name = "Attack"
-length = 0.5
+length = 0.3
+step = 0.05
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:position")
 tracks/0/interp = 1
@@ -17,10 +19,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.2, 0.5 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.05, 0.1, 0.25, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( 15.125, 0 ), Vector2( 31.1382, 0 ), Vector2( 15.125, 0 ) ]
+"values": [ Vector2( 15.125, 0 ), Vector2( 9.89097, 0 ), Vector2( 9.89097, 0 ), Vector2( 33.3884, 0 ), Vector2( 15.125, 0 ) ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("Sprite:rotation_degrees")
@@ -29,10 +31,10 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.5 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0, 0.05, 0.1, 0.25, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ 89.9999, 89.9999 ]
+"values": [ 89.9999, 89.9999, 89.9999, 89.9999, 89.9999 ]
 }
 tracks/2/type = "method"
 tracks/2/path = NodePath(".")
@@ -41,7 +43,7 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0.5 ),
+"times": PoolRealArray( 0.3 ),
 "transitions": PoolRealArray( 1 ),
 "values": [ {
 "args": [  ],
@@ -49,13 +51,14 @@ tracks/2/keys = {
 } ]
 }
 
-[node name="TestWeapon" type="Node2D"]
+[node name="Knife" type="Node2D"]
 script = ExtResource( 1 )
 res = ExtResource( 3 )
 
 [node name="Sprite" type="Sprite" parent="."]
-position = Vector2( 25.8005, 0 )
+position = Vector2( 15.125, 0 )
 rotation = 1.57079
+texture = ExtResource( 2 )
 
 [node name="WeaponHitbox" type="Area2D" parent="Sprite"]
 gravity = 0.0
@@ -63,6 +66,7 @@ collision_layer = 16
 collision_mask = 128
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite/WeaponHitbox"]
+position = Vector2( 1.96877e-05, -3.13778 )
 shape = SubResource( 1 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
