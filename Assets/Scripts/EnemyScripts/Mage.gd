@@ -1,21 +1,24 @@
 extends KinematicBody2D
 
+
 export(float) var SPEED = 100
 export(float) var timeKnock = 1
 export(float) var timeDamage = 1
-export(int) var health = 2
+export(int) var health = 1
 export(int) var damage = 1
 
 var path : PoolVector2Array
 
 #References
 onready var player = get_tree().get_root().find_node("Player",true,false)
-onready var weapon = $Weapon.get_child(0)
 onready var detectionRange = $DetectionRange
 onready var meleeRange = $MeleeRange 
 onready var knockbackTimer = $KnockbackTimer
 onready var damageAgainTimer = $DamageAgainTimer
 onready var vision = $Vision
+onready var attackTimer = $AttackTimer
+onready var shootPosition = $Sprite/Position2D
+onready var visibility = $VisibilityNotifier2D
 var navigation : Navigation2D
 #
 var axis : Vector2
@@ -30,7 +33,7 @@ onready var insideInfluence : bool = false
 onready var rng = RandomNumberGenerator.new()
 onready var coin = preload("res://Objects/Player/Coins.tscn")
 onready var deadEnemy = preload("res://Objects/Enemies/DeadEnemy.tscn")
-#Remember, we dont have windup as the windup time will be taken into consideration in the weapon animation time
+onready var projectile = preload("res://Objects/Enemies/MageProjectile.tscn")
 
 #Mods
 export(float) var speedMod = 1
@@ -42,6 +45,7 @@ func _ready():
 	damageAgainTimer.wait_time=timeDamage
 	state = idle
 	navigation= get_parent() 
+#	Damage(30,(Vector2.UP))
 	#Connect to timers
 	if true:
 		knockbackTimer.connect("timeout",self,"KnockbackTimerTimeout")
@@ -62,11 +66,10 @@ func _physics_process(_delta):
 			randomWalk:
 				pass
 			following:
-				RotateWeaponTowardsPlayer()
 				var distance = global_position.distance_to(player.global_position)
 				#Move
 				#Check if can go in
-				if (insideInfluence or player.CanEnemyGoIn())or(distance>500):
+				if (distance>180):
 					#Only move if path is set or available
 					if path.size()>0:
 						#Set moveSpeed
@@ -93,19 +96,20 @@ func _physics_process(_delta):
 				if !attacking:
 					if meleeRange.get_overlapping_areas().size()>0:
 						#Attack
-						weapon.Attack()
+						Attack()
+						attackTimer.start()
 						attacking=true
 			goingAround:
-				RotateWeaponTowardsPlayer()
 				#Try to attack
 				if !attacking:
 					if meleeRange.get_overlapping_areas().size()>0:
 						#Attack
-						weapon.Attack()
+						Attack()
+						attackTimer.start()
 						attacking=true
 				#Moving
 				if path.size()>0:
-					moveSpeed=SPEED*0.6
+					moveSpeed=SPEED*0.5
 					MoveAlongPath()
 			dead:
 				pass
@@ -122,16 +126,16 @@ func TimedProcess():
 				path = GetPathTowardsPoint(player.global_position)
 		goingAround:
 			#Try to go in if at least some ammount of the path was done
-			if (insideInfluence or player.CanEnemyGoIn())and(path.size()<3):
+			if (insideInfluence or player.CanEnemyGoIn())and(rng.randi_range(0,10)<3):
 				state=following
 				path=GetPathTowardsPoint(player.global_position)
 			#Renew path randomly if finished the current path
 			elif path.size()==0:
-				if rng.randi_range(0,10)<=5:
+				if rng.randi_range(0,10)<=-1:
 					path=GetPathTowardsPoint(global_position+Vector2(rng.randi_range(-100,100),rng.randi_range(-50,50)))
 			#Renew randomly
 			else:
-				if rng.randi_range(0,10)<=2:
+				if rng.randi_range(0,10)<=1:
 					path=GetPathTowardsPoint(global_position+Vector2(rng.randi_range(-100,100),rng.randi_range(-50,50)))
 			$Line2D.points=path
 		dead:
@@ -180,10 +184,6 @@ func AlignSprite():
 		$Sprite.flip_h=true
 
 #RANDOM FUNCTIONS
-#Rotates weapon towards the player if not attacking
-func RotateWeaponTowardsPlayer():
-	if !attacking:
-		weapon.look_at(player.global_position)
 #Detect player if inside radius and start following him
 func DetectPlayerAndFollow():
 	if detectionRange.get_overlapping_bodies().size()>0:
@@ -238,9 +238,22 @@ func PrintState():
 			$Label.text="State: RandomWalk"
 		goingAround:
 			$Label.text="State: GoingAround"
-
+func Attack():
+	#Check for vision
+	if visibility.is_on_screen():
+		vision.cast_to=to_local(player.global_position)
+		vision.force_raycast_update()
+		if vision.get_collider()!=null:
+			if vision.get_collider().get_parent().get_name()=="Player":
+				var ins = projectile.instance()
+				get_parent().add_child(ins)
+				ins.global_position=shootPosition.global_position
+				ins.direction=(player.global_position-ins.global_position).normalized()
 #TIMERS FINISHING
 func KnockbackTimerTimeout():
 	isKnockedback=false
 func DamageAgainTimerTimeout():
 	canReceiveDamage=true
+
+func AttackTimerTimeout():
+	attacking=false

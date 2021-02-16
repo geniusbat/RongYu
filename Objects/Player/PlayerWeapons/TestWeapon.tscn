@@ -54,13 +54,13 @@ script = ExtResource( 1 )
 res = ExtResource( 3 )
 
 [node name="Sprite" type="Sprite" parent="."]
-position = Vector2( 25.8005, 0 )
+position = Vector2( 15.125, 0 )
 rotation = 1.57079
 
 [node name="WeaponHitbox" type="Area2D" parent="Sprite"]
 gravity = 0.0
 collision_layer = 16
-collision_mask = 128
+collision_mask = 160
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite/WeaponHitbox"]
 shape = SubResource( 1 )

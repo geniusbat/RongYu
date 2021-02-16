@@ -1,0 +1,95 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Assets/Scripts/EnemyScripts/Mage.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Sprites/0x72_16x16DungeonTileset.v2.png" type="Texture" id=2]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 4.18353
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 260.082
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 5.92103, 7.97139 )
+
+[sub_resource type="CircleShape2D" id=4]
+radius = 300.0
+
+[node name="Mage" type="KinematicBody2D" groups=[
+"Enemies",
+]]
+collision_layer = 64
+collision_mask = 70
+script = ExtResource( 1 )
+SPEED = 60.0
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 82, 176, 13, 16 )
+
+[node name="Position2D" type="Position2D" parent="Sprite"]
+
+[node name="MovementCollision" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 2.99134 )
+shape = SubResource( 1 )
+
+[node name="DetectionRange" type="Area2D" parent="."]
+visible = false
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionRange"]
+shape = SubResource( 2 )
+
+[node name="KnockbackTimer" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
+
+[node name="DamageAgainTimer" type="Timer" parent="."]
+one_shot = true
+autostart = true
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 128
+collision_mask = 16
+
+[node name="Col" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2( -1.02369, 0.0118427 )
+shape = SubResource( 3 )
+
+[node name="Vision" type="RayCast2D" parent="."]
+enabled = true
+cast_to = Vector2( 0, 60 )
+collision_mask = 10
+collide_with_areas = true
+
+[node name="TimedProcess" type="Timer" parent="."]
+autostart = true
+
+[node name="Line2D" type="Line2D" parent="."]
+visible = false
+width = 5.0
+
+[node name="MeleeRange" type="Area2D" parent="."]
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MeleeRange"]
+shape = SubResource( 4 )
+
+[node name="Label" type="Label" parent="."]
+margin_left = -31.8693
+margin_top = -16.3518
+margin_right = 10.1307
+margin_bottom = -2.35179
+rect_scale = Vector2( 0.518622, 0.455142 )
+text = "Statew"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AttackTimer" type="Timer" parent="."]
+wait_time = 3.0
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
+[connection signal="timeout" from="DamageAgainTimer" to="." method="DamageAgainTimerTimeout"]
+[connection signal="timeout" from="AttackTimer" to="." method="AttackTimerTimeout"]

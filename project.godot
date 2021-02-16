@@ -38,9 +38,10 @@ ItemManager="*res://Assets/Scripts/Items/ItemManager.gd"
 
 window/size/width=960
 window/size/height=540
+window/size/fullscreen=true
 window/size/test_width=960
 window/size/test_height=540
-window/stretch/mode="2d"
+window/stretch/mode="viewport"
 window/stretch/aspect="keep"
 
 [input]

@@ -31,6 +31,8 @@ func _process(_delta):
 					el.get_parent().Damage(damage*player.damageMod,(-player.global_position+el.get_parent().global_position).normalized())
 				elif el.get_parent().has_method("Knockback"):
 					el.get_parent().Knockback((-player.global_position+el.get_parent().global_position).normalized())
+			elif el.get_parent().has_method("Bounce"):
+				el.get_parent().Bounce(player.global_position)
 	else:
 		#Rotate towards mouse
 		look_at(get_global_mouse_position())
