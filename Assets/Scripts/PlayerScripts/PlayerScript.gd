@@ -57,7 +57,7 @@ func _ready():
 	critical=0
 	#Initialize maxHealth drawen
 	healthSystem.MaxHealthChanged(maxHealth)
-	randomize()
+	rng.randomize()
 	if $Weapon.get_child_count()>0:
 		weapon=$Weapon.get_child(0)
 	#Create weapon, failsafe option. TODO
@@ -122,7 +122,7 @@ func _physics_process(_delta):
 	if dashState!=dashStates.dashing:
 		if isKnocked:
 			#Movespeed when nocked
-			moveSpeed=SPEED*0.6
+			moveSpeed=SPEED
 		else:
 			#Normally moving
 			if !immobile:

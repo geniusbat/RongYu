@@ -1,18 +1,40 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Assets/Scripts/EnemyScripts/Mage.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Sprites/0x72_16x16DungeonTileset.v2.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Sprites/0x72_16x16DungeonTileset.v1.png" type="Texture" id=3]
 
-[sub_resource type="CircleShape2D" id=1]
-radius = 4.18353
+[sub_resource type="Curve" id=1]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.842424, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CircleShape2D" id=2]
-radius = 260.082
+[sub_resource type="CurveTexture" id=2]
+curve = SubResource( 1 )
 
-[sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 5.92103, 7.97139 )
+[sub_resource type="ParticlesMaterial" id=3]
+flag_disable_z = true
+direction = Vector3( -100, -1, 0 )
+gravity = Vector3( 0, 50, 0 )
+initial_velocity = 20.0
+initial_velocity_random = 1.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale = 1.2
+scale_random = 1.0
+scale_curve = SubResource( 2 )
+color = Color( 0.470588, 0.294118, 0.486275, 1 )
+hue_variation = 1.0
+hue_variation_random = 0.03
 
 [sub_resource type="CircleShape2D" id=4]
+radius = 4.18353
+
+[sub_resource type="CircleShape2D" id=5]
+radius = 260.082
+
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 5.92103, 7.97139 )
+
+[sub_resource type="CircleShape2D" id=7]
 radius = 300.0
 
 [node name="Mage" type="KinematicBody2D" groups=[
@@ -29,17 +51,32 @@ region_enabled = true
 region_rect = Rect2( 82, 176, 13, 16 )
 
 [node name="Position2D" type="Position2D" parent="Sprite"]
+position = Vector2( -10.4375, -7.125 )
+
+[node name="Particles2D" type="Particles2D" parent="Sprite/Position2D"]
+amount = 16
+lifetime = 0.8
+local_coords = false
+process_material = SubResource( 3 )
+
+[node name="Sprite" type="Sprite" parent="Sprite"]
+position = Vector2( -9.19016, -2.94646 )
+rotation = 2.87979
+scale = Vector2( 0.48441, 0.48441 )
+texture = ExtResource( 3 )
+region_enabled = true
+region_rect = Rect2( 246, 24, 4, 23 )
 
 [node name="MovementCollision" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 2.99134 )
-shape = SubResource( 1 )
+shape = SubResource( 4 )
 
 [node name="DetectionRange" type="Area2D" parent="."]
 visible = false
 collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionRange"]
-shape = SubResource( 2 )
+shape = SubResource( 5 )
 
 [node name="KnockbackTimer" type="Timer" parent="."]
 wait_time = 0.1
@@ -55,7 +92,7 @@ collision_mask = 16
 
 [node name="Col" type="CollisionShape2D" parent="Hitbox"]
 position = Vector2( -1.02369, 0.0118427 )
-shape = SubResource( 3 )
+shape = SubResource( 6 )
 
 [node name="Vision" type="RayCast2D" parent="."]
 enabled = true
@@ -71,10 +108,11 @@ visible = false
 width = 5.0
 
 [node name="MeleeRange" type="Area2D" parent="."]
+visible = false
 collision_mask = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MeleeRange"]
-shape = SubResource( 4 )
+shape = SubResource( 7 )
 
 [node name="Label" type="Label" parent="."]
 margin_left = -31.8693
@@ -91,5 +129,6 @@ __meta__ = {
 wait_time = 3.0
 
 [node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
+visible = false
 [connection signal="timeout" from="DamageAgainTimer" to="." method="DamageAgainTimerTimeout"]
 [connection signal="timeout" from="AttackTimer" to="." method="AttackTimerTimeout"]

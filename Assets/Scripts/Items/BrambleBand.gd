@@ -5,6 +5,7 @@ onready var player = get_node("../..")
 onready var rng = RandomNumberGenerator.new()
 
 func _ready():
+	rng.randomize()
 	var _a = player.connect("playerDamaged",self,"PlayerDamaged")
 
 func PlayerDamaged():

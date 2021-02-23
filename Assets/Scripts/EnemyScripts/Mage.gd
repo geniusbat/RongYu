@@ -39,6 +39,7 @@ onready var projectile = preload("res://Objects/Enemies/MageProjectile.tscn")
 export(float) var speedMod = 1
 
 func _ready():
+	rng.randomize()
 	moveSpeed=SPEED
 	$Line2D.set_as_toplevel(true)
 	knockbackTimer.wait_time=timeKnock

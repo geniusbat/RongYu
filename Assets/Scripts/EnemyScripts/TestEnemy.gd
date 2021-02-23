@@ -36,6 +36,7 @@ onready var deadEnemy = preload("res://Objects/Enemies/DeadEnemy.tscn")
 export(float) var speedMod = 1
 
 func _ready():
+	rng.randomize()
 	moveSpeed=SPEED
 	$Line2D.set_as_toplevel(true)
 	knockbackTimer.wait_time=timeKnock
@@ -78,6 +79,7 @@ func _physics_process(_delta):
 							moveSpeed = SPEED*0.6
 						#Move
 						MoveAlongPath()
+						AlignSprite()
 					#Restart
 					else:
 						state=idle
@@ -107,6 +109,7 @@ func _physics_process(_delta):
 				if path.size()>0:
 					moveSpeed=SPEED*0.6
 					MoveAlongPath()
+					AlignSprite()
 			dead:
 				pass
 
