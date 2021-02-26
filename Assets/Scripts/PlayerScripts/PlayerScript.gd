@@ -60,10 +60,11 @@ func _ready():
 	rng.randomize()
 	if $Weapon.get_child_count()>0:
 		weapon=$Weapon.get_child(0)
-	#Create weapon, failsafe option. TODO
-	else:
-		pass
-
+#	#Create weapon, failsafe option. TODO
+#	else:
+#		var wps = load("res://Objects/Player/PlayerWeapons/TestWeapon.tscn").instance()
+#		$Weapon.add_child(wps)
+#		weapon=$Weapon.get_child(0)
 func _unhandled_input(event):
 	#Attack
 	if event.is_action_pressed("left_click"):
@@ -75,7 +76,7 @@ func _unhandled_input(event):
 		if weapon!=null:
 			var floorItem = load("res://Objects/Items/FloorItemGeneric.tscn").instance()
 			floorItem.global_position=global_position
-			get_tree().get_root().add_child(floorItem)
+			get_node("../..").add_child(floorItem)
 			floorItem.Create(weapon.res,true,(get_global_mouse_position()-global_position).normalized())
 			$Weapon.remove_child(weapon)
 			weapon=null
@@ -95,13 +96,13 @@ func _unhandled_input(event):
 				#The thing is not a weapon
 				else:
 					AddItem(el)
-	#Testing 
-	elif event.is_action_pressed("ui_accept"):
-		#Add item
-		var instance = load("res://Objects/Items/FloorItemGeneric.tscn").instance()
-		add_child(instance)
-		instance.Create(load("res://Assets/Misc/ItemRes/BagOfFlowers.tres"),false,Vector2.ZERO)
-		AddItem(instance)
+#	#Testing 
+#	elif event.is_action_pressed("ui_accept"):
+#		#Add item
+#		var instance = load("res://Objects/Items/FloorItemGeneric.tscn").instance()
+#		add_child(instance)
+#		instance.Create(load("res://Assets/Misc/ItemRes/BagOfFlowers.tres"),false,Vector2.ZERO)
+#		AddItem(instance)
 
 func _physics_process(_delta):
 	#DASHING

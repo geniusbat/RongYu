@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Assets/Sprites/0x72_16x16DungeonTileset.v1.png" type="Texture" id=1]
 [ext_resource path="res://Assets/Scripts/PlayerScripts/PlayerScript.gd" type="Script" id=2]
-[ext_resource path="res://Objects/Player/PlayerWeapons/TestWeapon.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Objects/Player/PlayerWeapons/Katana.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/Scripts/PlayerScripts/CameraScript.gd" type="Script" id=4]
 [ext_resource path="res://Assets/Scripts/PlayerScripts/InventoryScript.gd" type="Script" id=5]
 [ext_resource path="res://Objects/Player/GuiCell.tscn" type="PackedScene" id=6]
@@ -96,7 +96,7 @@ shape = SubResource( 1 )
 
 [node name="Weapon" type="Node2D" parent="."]
 
-[node name="TestWeapon" parent="Weapon" instance=ExtResource( 3 )]
+[node name="Katana" parent="Weapon" instance=ExtResource( 3 )]
 
 [node name="Camera" type="Camera2D" parent="."]
 current = true

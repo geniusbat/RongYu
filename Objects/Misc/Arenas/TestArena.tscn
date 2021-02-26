@@ -1,0 +1,79 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Assets/Scripts/ArenaScripts/ArenaScriptTest.gd" type="Script" id=1]
+[ext_resource path="res://Objects/Enemies/Mage.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Assets/Scripts/Misc/OutsideArena.gd" type="Script" id=3]
+[ext_resource path="res://Assets/Sprites/Arena.png" type="Texture" id=4]
+
+[node name="TestArena" type="Node2D"]
+z_index = -1
+z_as_relative = false
+script = ExtResource( 1 )
+listOfEnemies = [ ExtResource( 2 ) ]
+
+[node name="Arena" type="Sprite" parent="."]
+position = Vector2( 0, 125.475 )
+z_index = -10
+z_as_relative = false
+texture = ExtResource( 4 )
+
+[node name="OutsideArena" type="Area2D" parent="."]
+visible = false
+position = Vector2( 0, 125.475 )
+collision_mask = 2147484228
+script = ExtResource( 3 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="OutsideArena"]
+polygon = PoolVector2Array( 69, -266.9, 181, -261.9, 181, -260.8, 277, -251.8, 277, -250.7, 403, -229.7, 403, -228.5, 443, -219.6, 443, -218.5, 499, -201.5, 499, -200.4, 523, -191.4, 523, -190.2, 559, -172.2, 559, -170.1, 573, -162.2, 573, -159.8, 589, -143.8, 589, -141.5, 596, -127.5, 596, -109, 594.4, -109, 588.4, -93, 586.4, -93, 584.4, -87, 581.9, -87, 571.9, -75, 569.6, -75, 547.6, -59, 545.5, -59, 497.5, -36, 493.4, -36, 441.3, -18, 435.1, -18, 373.3, -2, 365, -2, 317.2, 8, 305.3, 8, 223.1, 20, 205.3, 20, 179.2, 24, 153.1, 24, 67.1, 30, -67, 30, -119, 28, -119, 26.9, -261, 15.8, -261, 14.8, -319, 7.79999, -319, 6.70001, -403, -8.29999, -403, -9.5, -443, -18.4, -443, -19.5, -499, -36.5, -499, -37.7, -549, -59.7, -549, -61.9, -573, -75.9, -573, -78.1, -585, -88.1, -585, -90.4, -594, -104.4, -594, -109, -596.2, -129, -594.4, -129, -588.4, -145, -586.4, -145, -584.4, -151, -581.9, -151, -571.9, -163, -569.6, -163, -547.6, -179, -545.5, -179, -497.5, -202, -493.4, -202, -441.3, -220, -435.1, -220, -373.3, -236, -365, -236, -317.2, -246, -305.3, -246, -223.1, -258, -205.2, -258, -151.1, -264, -119.1, -264, -69, -266.9, -69, -268, 69, -268 )
+
+[node name="Timer" type="Timer" parent="OutsideArena"]
+wait_time = 0.2
+one_shot = true
+autostart = true
+
+[node name="Spawns" type="Node2D" parent="."]
+
+[node name="SpawnPos" type="Position2D" parent="Spawns"]
+position = Vector2( -354.24, -60.1962 )
+
+[node name="SpawnPos2" type="Position2D" parent="Spawns"]
+position = Vector2( -197.299, -116.65 )
+
+[node name="SpawnPos3" type="Position2D" parent="Spawns"]
+position = Vector2( 182.793, -101.885 )
+
+[node name="SpawnPos4" type="Position2D" parent="Spawns"]
+position = Vector2( 261.511, -79.3657 )
+
+[node name="SpawnPos5" type="Position2D" parent="Spawns"]
+position = Vector2( 263.13, -37.1459 )
+
+[node name="SpawnPos6" type="Position2D" parent="Spawns"]
+position = Vector2( 227.592, 67.9584 )
+
+[node name="SpawnPos7" type="Position2D" parent="Spawns"]
+position = Vector2( 265.427, 19.1398 )
+
+[node name="SpawnPos8" type="Position2D" parent="Spawns"]
+position = Vector2( 97.39, 105.631 )
+
+[node name="SpawnPos9" type="Position2D" parent="Spawns"]
+position = Vector2( -94.3933, 113.122 )
+
+[node name="SpawnPos10" type="Position2D" parent="Spawns"]
+position = Vector2( -218.614, 83.0976 )
+
+[node name="SpawnPos11" type="Position2D" parent="Spawns"]
+position = Vector2( -323.632, 39.6538 )
+
+[node name="SpawnPos12" type="Position2D" parent="Spawns"]
+position = Vector2( -359.528, 7.04678 )
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 5.0
+autostart = true
+
+[node name="Tween" type="Tween" parent="."]
+[connection signal="body_exited" from="OutsideArena" to="OutsideArena" method="_on_OutsideArena_body_exited"]
+[connection signal="timeout" from="OutsideArena/Timer" to="OutsideArena" method="_on_Timer_timeout"]
+[connection signal="timeout" from="Timer" to="." method="TimedStep"]

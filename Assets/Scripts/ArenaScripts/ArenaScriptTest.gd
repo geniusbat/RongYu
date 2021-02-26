@@ -24,9 +24,9 @@ func _ready():
 
 
 func TimedStep():
-	#Check if no more enemies, then finish
+	#Check if no more enemies, then spawn teleporter
 	if get_tree().get_nodes_in_group("Enemies").size()==0:
 		ChangeToNextArena()
 
 func ChangeToNextArena():
-	pass
+	get_tree().get_root().find_node("ArenaManager",true,false).ChangeArena()

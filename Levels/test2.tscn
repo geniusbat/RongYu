@@ -1,14 +1,17 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://Objects/Player/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Objects/Enemies/Mage.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Objects/Misc/Arenas/ArenaNode.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Objects/Enemies/Oger.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Objects/Misc/Box.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Objects/Player/Player.tscn" type="PackedScene" id=5]
 [ext_resource path="res://NavPoligon.tres" type="NavigationPolygon" id=6]
 [ext_resource path="res://Objects/Misc/Torch.tscn" type="PackedScene" id=7]
 
 [node name="Level" type="Node2D"]
 
 [node name="ArenaNode" parent="." instance=ExtResource( 2 )]
+listOfEnemies = [ ExtResource( 1 ), ExtResource( 3 ) ]
 
 [node name="YSort" type="YSort" parent="."]
 
@@ -19,15 +22,13 @@ visible = false
 position = Vector2( 0, 125.475 )
 navpoly = ExtResource( 6 )
 
-[node name="Player" parent="YSort" instance=ExtResource( 1 )]
-position = Vector2( 62.2745, 16.4588 )
-damageMod = 4.0
-maxEnemiesInsideInfluence = 2
-
 [node name="Box" parent="YSort" instance=ExtResource( 4 )]
 position = Vector2( 39.061, -13.0409 )
 
 [node name="Torch" parent="YSort" instance=ExtResource( 7 )]
+position = Vector2( 248.711, -43.4182 )
 
 [node name="Torch2" parent="YSort" instance=ExtResource( 7 )]
-position = Vector2( -143.822, -12.9784 )
+position = Vector2( -119.753, 153.143 )
+
+[node name="Player" parent="YSort" instance=ExtResource( 5 )]

@@ -33,6 +33,7 @@ config/icon="res://icon.png"
 [autoload]
 
 ItemManager="*res://Assets/Scripts/Items/ItemManager.gd"
+ArenaManager="*res://Assets/Scripts/Singletons/ArenaManager.gd"
 
 [display]
 
