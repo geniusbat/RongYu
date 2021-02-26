@@ -25,7 +25,7 @@ func EnemyKilled(enemy):
 	var ins = flowerParticles.instance()
 	ins.global_position = enemy.global_position
 	get_tree().get_root().add_child(ins)
-	bar.value+=1
+	bar.value+=2
 	#Max value, add coins
 	if bar.value==10:
 		bar.value=0

@@ -20,7 +20,6 @@ z_as_relative = false
 texture = ExtResource( 4 )
 
 [node name="OutsideArena" type="Area2D" parent="."]
-visible = false
 position = Vector2( 0, 125.475 )
 collision_mask = 2147484228
 script = ExtResource( 3 )

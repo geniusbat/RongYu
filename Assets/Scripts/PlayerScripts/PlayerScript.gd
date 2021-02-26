@@ -97,12 +97,12 @@ func _unhandled_input(event):
 				else:
 					AddItem(el)
 #	#Testing 
-#	elif event.is_action_pressed("ui_accept"):
-#		#Add item
-#		var instance = load("res://Objects/Items/FloorItemGeneric.tscn").instance()
-#		add_child(instance)
-#		instance.Create(load("res://Assets/Misc/ItemRes/BagOfFlowers.tres"),false,Vector2.ZERO)
-#		AddItem(instance)
+	elif event.is_action_pressed("extras"):
+		#Add item
+		var instance = load("res://Objects/Items/FloorItemGeneric.tscn").instance()
+		add_child(instance)
+		instance.Create(load("res://Assets/Misc/ItemRes/BagOfFlowers.tres"),false,Vector2.ZERO)
+		AddItem(instance)
 
 func _physics_process(_delta):
 	#DASHING

@@ -28,5 +28,8 @@ func TimedStep():
 	if get_tree().get_nodes_in_group("Enemies").size()==0:
 		ChangeToNextArena()
 
+#Run this whenever you want to change arena. RUN THIS INSTEAD OF THE ONE IN THE ARENA MANAGER
 func ChangeToNextArena():
+	#Deactivate outside area
+	$OutsideArena.count=false
 	get_tree().get_root().find_node("ArenaManager",true,false).ChangeArena()

@@ -3,25 +3,47 @@ extends Node
 onready var next = preload("res://Objects/Misc/Arenas/TestArena.tscn")
 onready var arena = preload("res://Levels/test2.tscn")
 
-func _ready():
-	pass
+export(bool) var initialArea = true
 
-func _input(event):
-	if event.is_action_pressed("ui_accept"):
-		ChangeArena()
+func _ready():
+	#If not is an initial area, it means that there should be player info from previous arenas
+	if !initialArea:
+		print_debug("Loading")
+		#Get player ref
+		var player = get_tree().get_root().find_node("Player",true,false)
+		var dic = FileManager.LoadPlayerInfo()
+		player.armour = dic["armour"]
+		player.maxHealth = dic["maxHealth"]
+		player.health = dic["health"]
+		player.luck = dic["luck"]
+		player.critical = dic["critical"]
+		player.inventorySize = dic["inventorySize"]
+		player.maxEnemiesInsideInfluence = dic["maxEnemiesInsideInfluence"]
+		player.speedMod = dic["speedMod"]
+		player.damageMod = dic["damageMod"]
+		#Assign weapons
+		if player.get_node("Weapon").get_child_count()>0:
+			player.get_node("Weapon").get_child(0).free()
+		if dic["weaponRef"]!="":
+			player.get_node("Weapon").add_child(load(dic["weaponRef"]).instance())
+		player.weapon = player.get_node("Weapon").get_child(0)
+		#Assign items
+		var i = 0
+		while i < player.inventorySize:
+			var a = dic["item"+String(i)]
+			if a != "":
+				var item = load(a).instance()
+				player.get_node("Items").add_child(item)
+				player.get_node("GUI/Inventory").AddItem(item)
+				#Assign extra info on item
+				if item.get_name()=="BagOfFlowers":
+					item.bar.value=dic["itemExtra"+String(i)]
+			i+=1
+	else:
+		initialArea=false
 
 func ChangeArena():
+	FileManager.SavePlayer()
 	print_debug("Arena Changed")
-	var previousPlayer = get_tree().get_root().find_node("Player",true,false)
 	var _a = get_tree().change_scene_to(arena)
-	var player = get_tree().get_root().find_node("Player",true,false)
-	
-	#Assign correct weapon from prev player to new
-	var weapon = player.get_node("Weapon")
-	if weapon.get_child_count()>0:
-		weapon.get_child(0).queue_free()
-	if previousPlayer.get_node("Weapon").get_child_count()>0:
-		weapon.add_child(previousPlayer.get_node("Weapon").get_child(0))
-
-	#Take items from prev player and add it to current player
-	
+	call_deferred("_ready")
