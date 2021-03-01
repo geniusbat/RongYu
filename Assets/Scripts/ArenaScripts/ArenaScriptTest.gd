@@ -31,5 +31,5 @@ func TimedStep():
 #Run this whenever you want to change arena. RUN THIS INSTEAD OF THE ONE IN THE ARENA MANAGER
 func ChangeToNextArena():
 	#Deactivate outside area
-	$OutsideArena.count=false
+#	$OutsideArena.count=false
 	get_tree().get_root().find_node("ArenaManager",true,false).ChangeArena()

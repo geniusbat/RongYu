@@ -10,7 +10,7 @@ func _on_OutsideArena_body_exited(body):
 		return
 	#Is player
 	if body.get_name()=="Player":
-		get_tree().quit()
+		ArenaManager.GoToMenu()
 	elif body.has_method("Fall"):
 		body.call_deferred("Fall")
 	elif body.is_in_group("Enemies"):

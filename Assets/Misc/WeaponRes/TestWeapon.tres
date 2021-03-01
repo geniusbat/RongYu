@@ -12,3 +12,4 @@ floorSprite = ExtResource( 2 )
 weaponSprite = ExtResource( 2 )
 damage = 2
 movementSlow = 0.6
+screenShake = 5.0

@@ -8,8 +8,10 @@
 script = ExtResource( 1 )
 
 [node name="TextureRect" type="TextureProgress" parent="."]
-margin_right = 7.0
-margin_bottom = 18.0
+margin_left = 6.0
+margin_top = 20.0
+margin_right = 13.0
+margin_bottom = 38.0
 max_value = 10.0
 texture_under = ExtResource( 2 )
 texture_progress = ExtResource( 3 )

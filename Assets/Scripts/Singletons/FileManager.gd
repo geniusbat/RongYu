@@ -14,7 +14,13 @@ func SavePlayer():
 		"luck" : player.luck,
 		"health" : player.health,
 		"critical" : player.critical,
+		"coins" : player.get_node("GUI/Currency").get_child_count()
 	}
+	#Assign last coins value
+	if dic["coins"]==0:
+		dic["lastCoinAmount"]=0
+	else:
+		dic["lastCoinAmount"]=player.get_node("GUI/Currency").get_child(dic["coins"]-1).value
 	#Assign weapon
 	if player.get_node("Weapon").get_child_count()>0:
 		dic["weaponRef"] = player.get_node("Weapon").get_child(0).res.weaponNode

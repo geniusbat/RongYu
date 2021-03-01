@@ -30,12 +30,15 @@ export(float) var damageMod = 1
 var immobile:bool
 var notInvulnerable #Only used for items
 
-#Stats
+#Stats. BonusStat is used for adding to that stat from objects (jade armour would use bonusArmour)
 export(int) var maxHealth = 3
 var health:int
 var critical:int
+var bonusCritical:int
 var armour:int
+var bonusArmour:int
 var luck:int
+var bonusLuck:int
 export(int) var inventorySize:int = 3
 #Influence
 var enemiesInsideInfluence:int
@@ -55,6 +58,7 @@ func _ready():
 	armour=10
 	luck=20
 	critical=0
+	bonusArmour=0;bonusCritical=0;bonusLuck=0
 	#Initialize maxHealth drawen
 	healthSystem.MaxHealthChanged(maxHealth)
 	rng.randomize()
@@ -96,13 +100,21 @@ func _unhandled_input(event):
 				#The thing is not a weapon
 				else:
 					AddItem(el)
+	#Go to menu
+	elif event.is_action_pressed("ui_cancel"):
+		ArenaManager.GoToMenu()
 #	#Testing 
 	elif event.is_action_pressed("extras"):
+		#Random item
+#		var ins = preload("res://Objects/Items/RandomFloorItem.tscn").instance()
+#		get_parent().add_child(ins)
 		#Add item
-		var instance = load("res://Objects/Items/FloorItemGeneric.tscn").instance()
-		add_child(instance)
-		instance.Create(load("res://Assets/Misc/ItemRes/BagOfFlowers.tres"),false,Vector2.ZERO)
-		AddItem(instance)
+#		var instance = load("res://Objects/Items/FloorItemGeneric.tscn").instance()
+#		add_child(instance)
+#		instance.Create(load("res://Assets/Misc/ItemRes/JadeArmour.tres"),false,Vector2.ZERO)
+#		AddItem(instance)
+		#Add coins
+		AddCoins(50)
 
 func _physics_process(_delta):
 	#DASHING
@@ -180,7 +192,7 @@ func Damage(dam,direction):
 	if canReceiveDamage and notInvulnerable:
 		canReceiveDamage=false
 		#Try to block with armour
-		if rng.randi_range(0,100)<armour:
+		if rng.randi_range(0,100)<armour+bonusArmour:
 			#Blocked
 			print_debug("Armour blocked")
 			emit_signal("armourBlocked")
@@ -195,7 +207,7 @@ func DamageWithoutKnockback(dam):
 	if canReceiveDamage and notInvulnerable:
 		canReceiveDamage=false
 		#Try to block with armour
-		if rng.randi_range(0,100)<armour:
+		if rng.randi_range(0,100)<armour+bonusArmour:
 			#Blocked
 			print_debug("Armour blocked")
 			emit_signal("armourBlocked")

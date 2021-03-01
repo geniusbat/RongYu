@@ -43,9 +43,12 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0.3 ),
-"transitions": PoolRealArray( 1 ),
+"times": PoolRealArray( 0.15, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
 "values": [ {
+"args": [  ],
+"method": "ScreenShake"
+}, {
 "args": [  ],
 "method": "Finished"
 } ]
@@ -56,7 +59,7 @@ script = ExtResource( 1 )
 res = ExtResource( 3 )
 
 [node name="Sprite" type="Sprite" parent="."]
-position = Vector2( 15.125, 0 )
+position = Vector2( 17.7234, 0 )
 rotation = 1.57079
 texture = ExtResource( 2 )
 

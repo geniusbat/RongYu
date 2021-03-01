@@ -1,0 +1,104 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Scripts/Menus/MainMenuScript.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Scripts/Menus/OptionsMenuScript.gd" type="Script" id=2]
+
+[node name="Menu" type="Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -480.0
+margin_top = -270.0
+margin_right = 480.0
+margin_bottom = 270.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -400.0
+margin_top = -227.0
+margin_right = 480.0
+margin_bottom = -199.0
+text = "Rong Yu"
+
+[node name="Button" type="Button" parent="."]
+margin_left = 80.0
+margin_top = 86.4816
+margin_right = 92.0
+margin_bottom = 106.482
+text = "Play"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button2" type="Button" parent="."]
+margin_left = 80.0
+margin_top = 135.036
+margin_right = 92.0
+margin_bottom = 155.036
+text = "Options"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button3" type="Button" parent="."]
+margin_left = 80.0
+margin_top = 185.817
+margin_right = 92.0
+margin_bottom = 205.817
+text = "Exit"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="OptionsMenu" type="Popup" parent="."]
+visible = true
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -219.0
+margin_top = -146.0
+margin_right = 220.0
+margin_bottom = 86.0
+script = ExtResource( 2 )
+
+[node name="Panel" type="Panel" parent="OptionsMenu"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="OptionsMenu"]
+margin_left = 25.0
+margin_top = 9.0
+margin_right = 145.0
+margin_bottom = 32.0
+text = "Options"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CheckBox" type="CheckBox" parent="OptionsMenu"]
+margin_left = 27.0
+margin_top = 34.0
+margin_right = 51.0
+margin_bottom = 58.0
+text = "Fullscreen"
+
+[node name="Button" type="Button" parent="OptionsMenu"]
+margin_left = 34.0
+margin_top = 145.5
+margin_right = 46.0
+margin_bottom = 165.5
+text = "Exit"
+[connection signal="pressed" from="Button" to="." method="PlayButtonPressed"]
+[connection signal="pressed" from="Button2" to="." method="OptionsButtonPressed"]
+[connection signal="pressed" from="Button3" to="." method="ExitButtonPressed"]
+[connection signal="pressed" from="OptionsMenu/CheckBox" to="OptionsMenu" method="FullscreenTogglePressed"]
+[connection signal="pressed" from="OptionsMenu/Button" to="OptionsMenu" method="ClosePopupButtonPressed"]

@@ -5,11 +5,14 @@ export(Resource) var res
 var damage : int
 var slow : float
 var hitbox:Area2D
+var shake :float
 var player : KinematicBody2D
 var vision : RayCast2D
 var animationPlayer : AnimationPlayer
+onready var rng = RandomNumberGenerator.new()
 
 func _ready():
+	rng.randomize()
 	hitbox=$Sprite/WeaponHitbox
 	animationPlayer=$AnimationPlayer
 	player=get_node("../..")
@@ -19,6 +22,7 @@ func _ready():
 		var _a = animationPlayer.add_animation("Attack",res.attack)
 	self.damage=res.damage
 	self.slow=res.movementSlow
+	self.shake=res.screenShake
 	$Sprite.texture=res.weaponSprite
 
 func _process(_delta):
@@ -29,6 +33,9 @@ func _process(_delta):
 			if PlayerCanSeeTarget(el):
 				if el.get_parent().has_method("Damage"):
 					el.get_parent().Damage(damage*player.damageMod,(-player.global_position+el.get_parent().global_position).normalized())
+					#See if critical
+					if rng.randi_range(0,100)<=player.critical+player.bonusCritical:
+						player.emit_signal("criticalStrike",el)
 				elif el.get_parent().has_method("Knockback"):
 					el.get_parent().Knockback((-player.global_position+el.get_parent().global_position).normalized())
 				elif el.get_parent().has_method("Bounce"):
@@ -47,6 +54,9 @@ func PlayerCanSeeTarget(enemy):
 		return true
 	else:
 		return false
+
+func ScreenShake():
+	player.get_node("Camera").ScreenShake(shake)
 
 func Attack():
 	if !animationPlayer.is_playing():

@@ -240,6 +240,7 @@ func PrintState():
 		goingAround:
 			$Label.text="State: GoingAround"
 func Attack():
+	return
 	#Check for vision
 	if visibility.is_on_screen():
 		vision.cast_to=to_local(player.global_position)

@@ -14,8 +14,13 @@ func AddCoins(amount):
 		ins.value=amount
 	else:
 		var currentAmount = get_child(get_child_count()-1).value
+		#Check if the last coin holder  already  has 100
+		if currentAmount==100:
+			var ins = coinHolder.instance()
+			add_child(ins)
+			ins.value=amount
 		#Check if the sum will be over 100, if so, create new coin holder
-		if currentAmount+amount > 100:
+		elif currentAmount+amount > 100:
 			get_child(get_child_count()-1).value=100
 			var ins = coinHolder.instance()
 			add_child(ins)

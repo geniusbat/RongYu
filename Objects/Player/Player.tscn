@@ -1,14 +1,13 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Assets/Sprites/0x72_16x16DungeonTileset.v1.png" type="Texture" id=1]
 [ext_resource path="res://Assets/Scripts/PlayerScripts/PlayerScript.gd" type="Script" id=2]
-[ext_resource path="res://Objects/Player/PlayerWeapons/Katana.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Objects/Player/PlayerWeapons/Knife.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/Scripts/PlayerScripts/CameraScript.gd" type="Script" id=4]
 [ext_resource path="res://Assets/Scripts/PlayerScripts/InventoryScript.gd" type="Script" id=5]
 [ext_resource path="res://Objects/Player/GuiCell.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Assets/Scripts/PlayerScripts/HealthSystem.gd" type="Script" id=7]
 [ext_resource path="res://Assets/Scripts/PlayerScripts/CurrencySystem.gd" type="Script" id=8]
-[ext_resource path="res://Objects/Player/CoinHolder.tscn" type="PackedScene" id=9]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 3.25917
@@ -96,7 +95,7 @@ shape = SubResource( 1 )
 
 [node name="Weapon" type="Node2D" parent="."]
 
-[node name="Katana" parent="Weapon" instance=ExtResource( 3 )]
+[node name="Knife" parent="Weapon" instance=ExtResource( 3 )]
 
 [node name="Camera" type="Camera2D" parent="."]
 current = true
@@ -158,21 +157,6 @@ script = ExtResource( 8 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="CoinHolder" parent="GUI/Currency" instance=ExtResource( 9 )]
-margin_left = 0.0
-margin_right = 9.0
-value = 100.0
-
-[node name="CoinHolder2" parent="GUI/Currency" instance=ExtResource( 9 )]
-margin_left = 13.0
-margin_right = 22.0
-value = 100.0
-
-[node name="CoinHolder3" parent="GUI/Currency" instance=ExtResource( 9 )]
-margin_left = 26.0
-margin_right = 35.0
-value = 50.0
 
 [node name="HealthSystem" type="Node2D" parent="GUI"]
 script = ExtResource( 7 )

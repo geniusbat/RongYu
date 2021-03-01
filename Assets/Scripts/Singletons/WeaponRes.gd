@@ -10,3 +10,4 @@ export(Texture) var weaponSprite : Texture
 export(Animation) var attack : Animation
 export(int) var damage : int
 export(float) var movementSlow : float = 1.0
+export(float) var screenShake : float = 8
