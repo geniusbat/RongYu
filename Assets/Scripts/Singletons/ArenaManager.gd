@@ -1,9 +1,57 @@
 extends Node
 
-onready var next = preload("res://Objects/Misc/Arenas/TestArena.tscn")
-onready var arena = preload("res://Levels/test2.tscn")
-
 export(bool) var initialArea = true
+onready var musicVolume : float = 0
+onready var effectVolume : float = 0
+onready var arena = preload("res://Levels/test2.tscn")
+onready var rng = RandomNumberGenerator.new()
+var levels : Array
+var arenaMusic : Array
+var currentMusicIndex : int
+var musicPlayer : AudioStreamPlayer
+var levelNumber : int
+var musicBus 
+var effectBus
+
+func _init():
+	#Add music player
+	musicPlayer = AudioStreamPlayer.new()
+	add_child(musicPlayer)
+	musicPlayer.bus="Music"
+
+func _ready():
+	rng.randomize()
+	var _a = musicPlayer.connect("finished",self,"MusicFinished")
+	#Set up possible music for arena battles
+#	arenaMusic.append(preload("res://Assets/Audio/Music/BeepBox-Song.wav"))
+	arenaMusic.append(preload("res://Assets/Audio/Music/ether-vox.wav"))
+	#Set music buses
+	musicBus=AudioServer.get_bus_index("Music")
+	effectBus=AudioServer.get_bus_index("Master")
+	#Set up disponible levels
+#	levels.append(preload("res://Levels/test2.tscn"))
+	levels.append(preload("res://Levels/test.tscn"))
+#	levels.append(preload("res://Levels/Level00.tscn"))
+#	levels.append(preload("res://Levels/Level01.tscn"))
+#	levels.append(preload())
+	
+
+#Call this  when volume variables change to set them to the buses
+func VolumeChanged():
+	AudioServer.set_bus_volume_db(musicBus,musicVolume)
+	AudioServer.set_bus_volume_db(effectBus,effectVolume)
+	print(AudioServer.get_bus_volume_db(musicBus))
+
+#Plays a random track from the arenamusic list
+func GetAndPlayRandomTrack():
+	var num = rng.randi_range(0,arenaMusic.size()-1)
+	musicPlayer.stream=arenaMusic[num]
+	currentMusicIndex=num
+	musicPlayer.play()
+
+#Music finished, play more if necessary
+func MusicFinished():
+	GetAndPlayRandomTrack()
 
 #This will load the previous player state and will make the level's player match the same properties
 func LoadAndSpawnPlayer():
@@ -58,20 +106,34 @@ func LoadAndSpawnPlayer():
 			else:
 				currency.AddCoins(100)
 			i+=1
-		#I STILL NEED TO LOAD THE ENTITIES
+		#Loading entities
+		player.entities["Red"]=dic["Red"]
+		player.entities["Green"]=dic["Green"]
+		player.entities["Blue"]=dic["Blue"]
+		player.entities["Purple"]=dic["Purple"]
+		player.entities["Yellow"]=dic["Yellow"]
+		#Spawn entity scene if necessary
+		if dic["usedEntity"] != "":
+			var usedEntity = load("res://Objects/Player/Entities/"+dic["usedEntity"]+".tscn").instance()
+			player.get_node("Entity").add_child(usedEntity)
 	else:
 		initialArea=false
 
 #Call this to begin the game 
 func StartArena():
-	var _a = get_tree().change_scene_to(preload("res://Levels/test.tscn"))
+	levelNumber+=1
+	var _a = get_tree().change_scene_to(preload("res://Levels/Intro.tscn"))
+	GetAndPlayRandomTrack()
 	initialArea=false
 
 #Change the arena to a new one
 func ChangeArena():
+	levelNumber+=1
 	get_tree().get_root().find_node("OutsideArena",true,false).count=false
 	FileManager.SavePlayer()
 	print_debug("Arena Changed")
+	#select a random arena if necesary
+	arena=levels[rng.randi_range(0,levels.size()-1)]
 	var _a = get_tree().change_scene_to(arena)
 	call_deferred("LoadAndSpawnPlayer")
 

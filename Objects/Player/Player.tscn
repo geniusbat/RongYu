@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://Assets/Sprites/0x72_16x16DungeonTileset.v1.png" type="Texture" id=1]
 [ext_resource path="res://Assets/Scripts/PlayerScripts/PlayerScript.gd" type="Script" id=2]
@@ -8,6 +8,11 @@
 [ext_resource path="res://Objects/Player/GuiCell.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Assets/Scripts/PlayerScripts/HealthSystem.gd" type="Script" id=7]
 [ext_resource path="res://Assets/Scripts/PlayerScripts/CurrencySystem.gd" type="Script" id=8]
+[ext_resource path="res://Assets/Audio/Effects/PlayerEffects/walkSound.wav" type="AudioStream" id=9]
+[ext_resource path="res://Assets/Audio/Effects/PlayerEffects/PlayerHitSound.wav" type="AudioStream" id=10]
+[ext_resource path="res://Assets/Scripts/PlayerScripts/TeleporterAreaDetector.gd" type="Script" id=11]
+[ext_resource path="res://Objects/Player/Entities/BlueEntity.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Objects/Player/CoinHolder.tscn" type="PackedScene" id=13]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 3.25917
@@ -137,6 +142,8 @@ shape = SubResource( 4 )
 
 [node name="Entity" type="Node2D" parent="."]
 
+[node name="BlueEntity" parent="Entity" instance=ExtResource( 12 )]
+
 [node name="Items" type="Node2D" parent="."]
 
 [node name="GUI" type="CanvasLayer" parent="."]
@@ -157,6 +164,16 @@ script = ExtResource( 8 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="CoinHolder" parent="GUI/Currency" instance=ExtResource( 13 )]
+margin_left = 0.0
+margin_right = 9.0
+value = 100.0
+
+[node name="CoinHolder2" parent="GUI/Currency" instance=ExtResource( 13 )]
+margin_left = 13.0
+margin_right = 22.0
+value = 100.0
 
 [node name="HealthSystem" type="Node2D" parent="GUI"]
 script = ExtResource( 7 )
@@ -183,6 +200,12 @@ margin_top = 9.0
 margin_right = 122.977
 margin_bottom = 9.0
 
+[node name="Cell03" parent="GUI/Inventory" instance=ExtResource( 6 )]
+margin_left = 160.977
+margin_top = 9.0
+margin_right = 160.977
+margin_bottom = 9.0
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Idle = SubResource( 5 )
 anims/Walking = SubResource( 6 )
@@ -198,8 +221,37 @@ collision_mask = 256
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
 shape = SubResource( 7 )
+
+[node name="WalkAudioStream" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 9 )
+volume_db = -10.0
+stream_paused = true
+
+[node name="PlayerHitStream" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 10 )
+
+[node name="TeleporterAreaDetector" type="Area2D" parent="."]
+collision_mask = 1024
+script = ExtResource( 11 )
+
+[node name="MoveCollision2" type="CollisionShape2D" parent="TeleporterAreaDetector"]
+position = Vector2( 0, 3.8 )
+shape = SubResource( 1 )
+
+[node name="Label" type="Label" parent="TeleporterAreaDetector"]
+visible = false
+margin_left = -60.321
+margin_top = -26.8383
+margin_right = 69.679
+margin_bottom = -12.8383
+text = "Interact to teleport"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="timeout" from="DashingTimer" to="." method="DashingTimeout"]
 [connection signal="timeout" from="KnockbackTimer" to="." method="KnockbackTimerTimeout"]
 [connection signal="timeout" from="ReceiveDamageTimer" to="." method="ReceiveDamageTimerTimeout"]
 [connection signal="body_entered" from="InfluenceAreaIn" to="." method="BodyEnteredInfluence"]
 [connection signal="body_exited" from="InfluenceAreaOut" to="." method="BodyExitedInfluence"]
+[connection signal="area_entered" from="TeleporterAreaDetector" to="TeleporterAreaDetector" method="_on_TeleporterAreaDetector_area_entered"]
+[connection signal="area_exited" from="TeleporterAreaDetector" to="TeleporterAreaDetector" method="_on_TeleporterAreaDetector_area_exited"]

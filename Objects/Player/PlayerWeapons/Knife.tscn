@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Assets/Scripts/PlayerScripts/TestWeapon.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Sprites/Player/PlayerWeapons/Knife.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Misc/WeaponRes/Knife.tres" type="Resource" id=3]
+[ext_resource path="res://Assets/Audio/Effects/PlayerEffects/seax-unsheathe-02.wav" type="AudioStream" id=4]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 2.85778
@@ -53,13 +54,27 @@ tracks/2/keys = {
 "method": "Finished"
 } ]
 }
+tracks/3/type = "audio"
+tracks/3/path = NodePath("WeaponAttackAudio")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"clips": [ {
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource( 4 )
+} ],
+"times": PoolRealArray( 0.05 )
+}
 
 [node name="Knife" type="Node2D"]
 script = ExtResource( 1 )
 res = ExtResource( 3 )
 
 [node name="Sprite" type="Sprite" parent="."]
-position = Vector2( 17.7234, 0 )
+position = Vector2( 15.125, 0 )
 rotation = 1.57079
 texture = ExtResource( 2 )
 
@@ -74,3 +89,7 @@ shape = SubResource( 1 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Attack = SubResource( 2 )
+
+[node name="WeaponAttackAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+volume_db = -10.0

@@ -10,6 +10,7 @@ var isKnocked:bool
 var unKnockable:bool
 var axis:Vector2
 var movement:Vector2
+var inputDashed:bool
 onready var rng = RandomNumberGenerator.new()
 
 #References
@@ -21,6 +22,8 @@ onready var inventory = $GUI/Inventory
 onready var healthSystem = $GUI/HealthSystem
 onready var currency = $GUI/Currency
 onready var items = $Items
+onready var walkAudioStream = $WalkAudioStream
+onready var playerHitStream = $PlayerHitStream
 var weapon
 #Misc states
 var canReceiveDamage:bool #Used for non-item cases
@@ -39,20 +42,21 @@ var armour:int
 var bonusArmour:int
 var luck:int
 var bonusLuck:int
-export(int) var inventorySize:int = 3
+export(int) var inventorySize:int = 4
+var entities : Dictionary
 #Influence
 var enemiesInsideInfluence:int
 export(int) var maxEnemiesInsideInfluence=3
 
-signal enemyKilled(enemy); signal enemyDamaged(enemy)
+signal enemyKilled(enemyPos); signal enemyDamaged(enemy)
 signal playerAttacked
 signal playerDamaged(damage); signal playerDashed; signal playerHealed(healed); signal playerKnocked; signal addedCoins(coins); 
-signal criticalStrike(enemyA); signal armourBlocked; signal sacrificeDone; signal itemSpawned(item)
+signal criticalStrike(enemyA); signal armourBlocked; signal sacrificeDone(entity); signal itemSpawned(item)
 
 func _ready():
 	#Setting up variables
 	dashState=dashStates.normal; moveSpeed=SPEED; isKnocked=false; canReceiveDamage=true; attacking=false
-	enemiesInsideInfluence=0; unKnockable=false; notInvulnerable=true
+	enemiesInsideInfluence=0; unKnockable=false; notInvulnerable=true; inputDashed=false
 	dashTime=0.2; windupTime=0.5
 	health=3
 	armour=10
@@ -69,18 +73,28 @@ func _ready():
 #		var wps = load("res://Objects/Player/PlayerWeapons/TestWeapon.tscn").instance()
 #		$Weapon.add_child(wps)
 #		weapon=$Weapon.get_child(0)
+	#Create entity dic. Where each entity key has an int value which is the affinity
+	entities["Red"]=0
+	entities["Green"]=0
+	entities["Blue"]=0
+	entities["Purple"]=0
+	entities["Yellow"]=0
+
 func _unhandled_input(event):
 	#Attack
 	if event.is_action_pressed("left_click"):
 		if weapon!=null:
 			weapon.Attack()
 			attacking=true
+	#Dash
+	elif event.is_action_pressed("dash"):
+		inputDashed=true
 	#Release weapon
 	elif event.is_action_pressed("leaveWeapon"):
 		if weapon!=null:
 			var floorItem = load("res://Objects/Items/FloorItemGeneric.tscn").instance()
 			floorItem.global_position=global_position
-			get_node("../..").add_child(floorItem)
+			get_node("..").add_child(floorItem)
 			floorItem.Create(weapon.res,true,(get_global_mouse_position()-global_position).normalized())
 			$Weapon.remove_child(weapon)
 			weapon=null
@@ -90,16 +104,19 @@ func _unhandled_input(event):
 		if things!=null:
 			for area in things:
 				var el = area.get_parent()
-				#The thing is a weapon, try to pick up only if weapon slot empty
-				if weapon==null and el.isWeapon:
-					var res : WeaponRes= el.weaponInfo
-					var ins = load(res.weaponNode).instance()
-					$Weapon.add_child(ins)
-					weapon=ins
-					el.queue_free()
-				#The thing is not a weapon
-				else:
-					AddItem(el)
+				#Cancel this if it doesnt have isWeapon, meaning it is not an item floor
+				if "isWeapon" in el:
+					#The thing is a weapon, try to pick up only if weapon slot empty
+					if el.isWeapon:
+						if weapon==null:
+							var res : WeaponRes= el.weaponInfo
+							var ins = load(res.weaponNode).instance()
+							$Weapon.add_child(ins)
+							weapon=ins
+							el.queue_free()
+					#The thing is not a weapon
+					else:
+						AddItem(el)
 	#Go to menu
 	elif event.is_action_pressed("ui_cancel"):
 		ArenaManager.GoToMenu()
@@ -109,19 +126,20 @@ func _unhandled_input(event):
 #		var ins = preload("res://Objects/Items/RandomFloorItem.tscn").instance()
 #		get_parent().add_child(ins)
 		#Add item
-#		var instance = load("res://Objects/Items/FloorItemGeneric.tscn").instance()
-#		add_child(instance)
-#		instance.Create(load("res://Assets/Misc/ItemRes/JadeArmour.tres"),false,Vector2.ZERO)
-#		AddItem(instance)
+		var instance = load("res://Objects/Items/FloorItemGeneric.tscn").instance()
+		add_child(instance)
+		instance.Create(load("res://Assets/Misc/ItemRes/Alcohol.tres"),false,Vector2.ZERO)
+		AddItem(instance)
 		#Add coins
-		AddCoins(50)
+#		AddCoins(50)
 
 func _physics_process(_delta):
 	#DASHING
 	match(dashState):
 		#Normal
 		dashStates.normal:
-			if Input.is_action_just_pressed("dash") and GetInputDir()!=Vector2.ZERO and !isKnocked:
+			if inputDashed and GetInputDir()!=Vector2.ZERO and !isKnocked:
+				inputDashed=false
 				emit_signal("playerDashed")
 				dashState=dashStates.dashing
 				$DashingTimer.start(dashTime)
@@ -145,6 +163,14 @@ func _physics_process(_delta):
 				#Slow if attacking
 				if attacking and weapon!=null:
 					moveSpeed*=weapon.slow
+				#Move if neccesary
+				if axis!=Vector2.ZERO:
+					if walkAudioStream.playing==false:
+						walkAudioStream.playing=true
+					elif walkAudioStream.stream_paused==true:
+						walkAudioStream.stream_paused=false
+				else:
+					walkAudioStream.stream_paused=true
 	#Dashing
 	else:
 		moveSpeed=DASH*speedMod
@@ -199,6 +225,7 @@ func Damage(dam,direction):
 		else:
 			health-=dam
 			HealthChanged()
+			playerHitStream.play()
 			emit_signal("playerDamaged")
 		Knockback(direction)
 		$ReceiveDamageTimer.start()
@@ -214,6 +241,7 @@ func DamageWithoutKnockback(dam):
 		else:
 			health-=dam
 			HealthChanged()
+			playerHitStream.play()
 			emit_signal("playerDamaged")
 		$ReceiveDamageTimer.start()
 
@@ -254,6 +282,23 @@ func AddCoins(amount):
 #Call this when trying to deplete coins, it just redirects
 func DepleteCoin(amount) -> bool:
 	return currency.DepleteCoin(amount)
+
+#ENTITIES
+#Call this when trying to raise entity affinity
+func IncreaseAffinity(entityWhoWasRaised):
+	print(entityWhoWasRaised)
+	entities[entityWhoWasRaised]+=1
+	if $Entity.get_child_count()>0:
+		#If you have an entity attached and is the same, tell it to raise stats, if not assign new entity
+		if $Entity.get_child(0).get_name()==entityWhoWasRaised:
+			$Entity.get_child(0).RaiseStats()
+		else:
+			$Entity.get_child(0).queue_free()
+			var ins = load("res://Objects/Player/Entities/"+entityWhoWasRaised+"Entity.tscn").instance()
+			$Entity.add_child(ins)
+	else:
+		var ins = load("res://Objects/Player/Entities/"+entityWhoWasRaised+"Entity.tscn").instance()
+		$Entity.add_child(ins)
 
 #INFLUENCE
 #Asked when anenemy tries to get inside area

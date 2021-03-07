@@ -1,13 +1,14 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Assets/Scripts/ArenaScripts/ArenaScriptTest.gd" type="Script" id=1]
 [ext_resource path="res://Objects/Enemies/Mage.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Assets/Scripts/Misc/OutsideArena.gd" type="Script" id=3]
 [ext_resource path="res://Assets/Sprites/Arena.png" type="Texture" id=4]
+[ext_resource path="res://Objects/Misc/Teleporter.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Objects/Misc/Fountains/Fountain.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Objects/Trader.tscn" type="PackedScene" id=7]
 
-[node name="ArenaNode" type="Node2D" groups=[
-"DeleteWhenArenaChange",
-]]
+[node name="ArenaNode" type="Node2D"]
 z_index = -1
 z_as_relative = false
 script = ExtResource( 1 )
@@ -36,45 +37,94 @@ autostart = true
 [node name="Spawns" type="Node2D" parent="."]
 
 [node name="SpawnPos" type="Position2D" parent="Spawns"]
-position = Vector2( -151.88, -66.3993 )
+position = Vector2( -372, -66 )
 
 [node name="SpawnPos2" type="Position2D" parent="Spawns"]
-position = Vector2( -164.065, -100.387 )
+position = Vector2( -196, -105 )
 
 [node name="SpawnPos3" type="Position2D" parent="Spawns"]
-position = Vector2( 182.793, -101.885 )
+position = Vector2( -372, 66 )
 
 [node name="SpawnPos4" type="Position2D" parent="Spawns"]
-position = Vector2( 261.511, -79.3657 )
+position = Vector2( -196, 105 )
 
 [node name="SpawnPos5" type="Position2D" parent="Spawns"]
-position = Vector2( 263.13, -37.1459 )
+position = Vector2( 372, -66 )
 
 [node name="SpawnPos6" type="Position2D" parent="Spawns"]
-position = Vector2( 227.592, 67.9584 )
+position = Vector2( 196, -105 )
 
 [node name="SpawnPos7" type="Position2D" parent="Spawns"]
-position = Vector2( 181.988, 12.7758 )
+position = Vector2( 372, 66 )
 
 [node name="SpawnPos8" type="Position2D" parent="Spawns"]
-position = Vector2( 97.39, 105.631 )
+position = Vector2( 196, 105 )
 
 [node name="SpawnPos9" type="Position2D" parent="Spawns"]
-position = Vector2( -94.3933, 113.122 )
+position = Vector2( 0, 105 )
 
 [node name="SpawnPos10" type="Position2D" parent="Spawns"]
-position = Vector2( -137.297, 81.3905 )
+position = Vector2( 0, -105 )
 
 [node name="SpawnPos11" type="Position2D" parent="Spawns"]
-position = Vector2( -147.562, 43.8964 )
+position = Vector2( -487, 0 )
 
 [node name="SpawnPos12" type="Position2D" parent="Spawns"]
-position = Vector2( -162.245, 18.3605 )
+position = Vector2( 487, 0 )
+
+[node name="SpawnPos13" type="Position2D" parent="Spawns"]
+position = Vector2( 322, 0 )
+
+[node name="SpawnPos14" type="Position2D" parent="Spawns"]
+position = Vector2( -322, 0 )
+
+[node name="SpawnPos15" type="Position2D" parent="Spawns"]
+position = Vector2( -177, -48 )
+
+[node name="SpawnPos16" type="Position2D" parent="Spawns"]
+position = Vector2( 177, -48 )
+
+[node name="SpawnPos17" type="Position2D" parent="Spawns"]
+position = Vector2( 177, 48 )
+
+[node name="SpawnPos18" type="Position2D" parent="Spawns"]
+position = Vector2( -177, 48 )
 
 [node name="Timer" type="Timer" parent="."]
 autostart = true
 
 [node name="Tween" type="Tween" parent="."]
+
+[node name="Teleporter" parent="." instance=ExtResource( 5 )]
+visible = false
+position = Vector2( 0, -8.9458 )
+monitoring = false
+monitorable = false
+
+[node name="Entities" type="Node2D" parent="."]
+position = Vector2( 0, 824.078 )
+
+[node name="GreenFountain" parent="Entities" instance=ExtResource( 6 )]
+position = Vector2( -85.2867, -88.9948 )
+entityRepresented = "Green"
+
+[node name="RedFountain" parent="Entities" instance=ExtResource( 6 )]
+position = Vector2( -40.2595, -88.9948 )
+
+[node name="BlueFountain" parent="Entities" instance=ExtResource( 6 )]
+position = Vector2( 10.0649, -88.9948 )
+entityRepresented = "Blue"
+
+[node name="YellowFountain" parent="Entities" instance=ExtResource( 6 )]
+position = Vector2( 52.9731, -88.9948 )
+entityRepresented = "Yellow"
+
+[node name="PurpleFountain" parent="Entities" instance=ExtResource( 6 )]
+position = Vector2( 91.6435, -88.9948 )
+entityRepresented = "Purple"
+
+[node name="Trader" parent="." instance=ExtResource( 7 )]
+position = Vector2( 195.107, -44.5449 )
 [connection signal="body_exited" from="OutsideArena" to="OutsideArena" method="_on_OutsideArena_body_exited"]
 [connection signal="timeout" from="OutsideArena/Timer" to="OutsideArena" method="_on_Timer_timeout"]
 [connection signal="timeout" from="Timer" to="." method="TimedStep"]

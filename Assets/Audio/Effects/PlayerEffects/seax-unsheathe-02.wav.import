@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/seax-unsheathe-02.wav-b3b9eacb59d0957631e83ec2352088b9.sample"
+
+[deps]
+
+source_file="res://Assets/Audio/Effects/PlayerEffects/seax-unsheathe-02.wav"
+dest_files=[ "res://.import/seax-unsheathe-02.wav-b3b9eacb59d0957631e83ec2352088b9.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

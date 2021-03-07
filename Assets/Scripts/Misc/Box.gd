@@ -2,12 +2,19 @@ extends KinematicBody2D
 
 export(float) var speed = 100
 export(int) var health = 2
+export(int) var chanceToSpawnItem = 50
 
 var dir : Vector2
 onready var knockbackTimer = $KnockbackTimer
 onready var isKnocked = false
 onready var fallen = false
 onready var particles = preload("res://Objects/Misc/Particles/BoxParticles.tscn")
+onready var randomItem = preload("res://Objects/Items/RandomFloorItem.tscn")
+onready var rng = RandomNumberGenerator.new()
+
+func _ready():
+	rng.randomize()
+
 
 func _physics_process(_delta):
 	if isKnocked:
@@ -25,7 +32,14 @@ func Damage(damage,direction):
 			var ins = particles.instance()
 			ins.global_position=global_position
 			get_parent().add_child(ins)
+			SpawnItem()
 			queue_free()
+func SpawnItem():
+	var num = rng.randi_range(0,100)
+	if num<=chanceToSpawnItem:
+		var ins = randomItem.instance()
+		ins.position=position
+		get_parent().add_child(ins)
 
 func Fall():
 	fallen = true
@@ -39,7 +53,6 @@ func Knockback(_direction):
 	if !isKnocked:
 		isKnocked=true
 		knockbackTimer.start()
-
 
 func _on_KnockbackTimer_timeout():
 	isKnocked=false

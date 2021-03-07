@@ -3,6 +3,7 @@ extends Node2D
 var parent
 var animationPlayer : AnimationPlayer
 var hitbox : Area2D
+onready var weaponSound = $WeaponSound
 
 func _ready():
 	parent=get_node("../..")
@@ -21,3 +22,6 @@ func Attack():
 
 func Finish():
 	parent.attacking=false
+
+func SoundWeapon():
+	weaponSound.play()

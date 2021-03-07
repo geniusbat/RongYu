@@ -1,8 +1,9 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Assets/Scripts/EnemyScripts/Mage.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Sprites/0x72_16x16DungeonTileset.v2.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Sprites/0x72_16x16DungeonTileset.v1.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Audio/Effects/PlayerEffects/PlayerHitSound.wav" type="AudioStream" id=4]
 
 [sub_resource type="Curve" id=1]
 _data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.842424, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
@@ -29,7 +30,7 @@ hue_variation_random = 0.03
 radius = 4.18353
 
 [sub_resource type="CircleShape2D" id=5]
-radius = 260.082
+radius = 600.0
 
 [sub_resource type="RectangleShape2D" id=6]
 extents = Vector2( 5.92103, 7.97139 )
@@ -130,5 +131,9 @@ wait_time = 3.0
 
 [node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
 visible = false
+
+[node name="DamagedStream" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+volume_db = -5.0
 [connection signal="timeout" from="DamageAgainTimer" to="." method="DamageAgainTimerTimeout"]
 [connection signal="timeout" from="AttackTimer" to="." method="AttackTimerTimeout"]

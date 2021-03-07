@@ -73,6 +73,9 @@ script = ExtResource( 2 )
 [node name="Panel" type="Panel" parent="OptionsMenu"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="RichTextLabel" type="RichTextLabel" parent="OptionsMenu"]
 margin_left = 25.0
@@ -91,14 +94,64 @@ margin_right = 51.0
 margin_bottom = 58.0
 text = "Fullscreen"
 
+[node name="RichTextLabel2" type="RichTextLabel" parent="OptionsMenu"]
+margin_left = 36.2974
+margin_top = 64.0613
+margin_right = 156.297
+margin_bottom = 87.0613
+text = "Music"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HSlider" type="HSlider" parent="OptionsMenu"]
+margin_left = 36.0
+margin_top = 86.874
+margin_right = 265.0
+margin_bottom = 102.874
+min_value = -72.0
+max_value = 5.0
+step = 0.0
+tick_count = 25
+ticks_on_borders = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="OptionsMenu"]
+margin_left = 36.2974
+margin_top = 105.031
+margin_right = 156.297
+margin_bottom = 128.031
+text = "Effects"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HSlider2" type="HSlider" parent="OptionsMenu"]
+margin_left = 36.0
+margin_top = 127.844
+margin_right = 265.0
+margin_bottom = 143.844
+min_value = -72.0
+max_value = 5.0
+step = 0.0
+tick_count = 25
+ticks_on_borders = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Button" type="Button" parent="OptionsMenu"]
 margin_left = 34.0
-margin_top = 145.5
-margin_right = 46.0
-margin_bottom = 165.5
+margin_top = 166.006
+margin_right = 69.0
+margin_bottom = 186.006
 text = "Exit"
 [connection signal="pressed" from="Button" to="." method="PlayButtonPressed"]
 [connection signal="pressed" from="Button2" to="." method="OptionsButtonPressed"]
 [connection signal="pressed" from="Button3" to="." method="ExitButtonPressed"]
 [connection signal="pressed" from="OptionsMenu/CheckBox" to="OptionsMenu" method="FullscreenTogglePressed"]
+[connection signal="value_changed" from="OptionsMenu/HSlider" to="OptionsMenu" method="MusicVolumeChanged"]
+[connection signal="value_changed" from="OptionsMenu/HSlider2" to="OptionsMenu" method="EffectVolumeChanged"]
 [connection signal="pressed" from="OptionsMenu/Button" to="OptionsMenu" method="ClosePopupButtonPressed"]

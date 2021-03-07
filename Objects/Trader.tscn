@@ -1,0 +1,56 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Assets/Sprites/0x72_16x16DungeonTileset.v1.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Sprites/Misc/Carpet.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Scripts/Misc/Trader.gd" type="Script" id=3]
+
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 8.76623
+height = 48.0377
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 3.0
+
+[node name="Trader" type="Area2D"]
+visible = false
+collision_layer = 2147483649
+collision_mask = 12
+script = ExtResource( 3 )
+
+[node name="Carpet" type="Sprite" parent="."]
+position = Vector2( 0, 12 )
+texture = ExtResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 0, -5 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 36, 38, 7, 7 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 11 )
+rotation = 1.57079
+shape = SubResource( 1 )
+disabled = true
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+collision_layer = 2
+collision_mask = 68
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2( 0, -1.41218 )
+shape = SubResource( 2 )
+
+[node name="Label" type="Label" parent="."]
+visible = false
+margin_left = -73.3289
+margin_top = -27.0
+margin_right = 92.6711
+margin_bottom = -13.0
+text = "Interact to trade for skulls"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="area_entered" from="." to="." method="_on_Trader_area_entered"]
+[connection signal="area_exited" from="." to="." method="_on_Trader_area_exited"]

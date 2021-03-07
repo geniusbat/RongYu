@@ -14,7 +14,7 @@ func SavePlayer():
 		"luck" : player.luck,
 		"health" : player.health,
 		"critical" : player.critical,
-		"coins" : player.get_node("GUI/Currency").get_child_count()
+		"coins" : player.get_node("GUI/Currency").get_child_count(),
 	}
 	#Assign last coins value
 	if dic["coins"]==0:
@@ -40,6 +40,16 @@ func SavePlayer():
 			dic["itemExtra"+String(el.get_index())]=el.bar.value
 		else:
 			dic["itemExtra"+String(el.get_index())]=""
+	#Entities
+	dic["Red"]=player.entities["Red"]
+	dic["Blue"]=player.entities["Blue"]
+	dic["Green"]=player.entities["Green"]
+	dic["Purple"]=player.entities["Purple"]
+	dic["Yellow"]=player.entities["Yellow"]
+	if player.get_node("Entity").get_child_count()>0:
+		dic["usedEntity"] = player.get_node("Entity").get_child(0).get_name()
+	else:
+		dic["usedEntity"] = ""
 	file.open("user://Player.labo",File.WRITE)
 	file.store_string(to_json(dic))
 	file.close()

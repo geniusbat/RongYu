@@ -9,6 +9,7 @@
 [node name="Level" type="Node2D"]
 
 [node name="ArenaNode" parent="." instance=ExtResource( 2 )]
+traderSpawnOnEnd = true
 
 [node name="YSort" type="YSort" parent="."]
 
@@ -21,7 +22,6 @@ navpoly = ExtResource( 6 )
 
 [node name="Player" parent="YSort" instance=ExtResource( 1 )]
 position = Vector2( 62.2745, 16.4588 )
-damageMod = 4.0
 maxEnemiesInsideInfluence = 2
 
 [node name="Box" parent="YSort" instance=ExtResource( 4 )]

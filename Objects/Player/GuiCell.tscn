@@ -28,10 +28,10 @@ __meta__ = {
 
 [node name="Description" type="RichTextLabel" parent="."]
 visible = false
-margin_left = 6.72717
-margin_top = 19.656
-margin_right = 75.7272
-margin_bottom = 78.656
+margin_left = 7.0
+margin_top = 20.0
+margin_right = 208.0
+margin_bottom = 325.0
 text = "Texto de prueba"
 
 [node name="ExtraPos" type="Control" parent="."]

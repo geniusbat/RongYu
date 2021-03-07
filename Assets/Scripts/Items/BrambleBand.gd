@@ -25,4 +25,5 @@ func PlayerDamaged():
 				if playerPos.distance_to(i.global_position) < distance:
 					distance = playerPos.distance_to(i.global_position)
 					enemy = i
-		enemy.DamageWithoutKnockbackAndTimer(1)
+		if enemy!=null and enemy.has_method("DamageWithoutKnockbackAndTimer"):
+			enemy.DamageWithoutKnockbackAndTimer(1)

@@ -19,6 +19,7 @@ onready var vision = $Vision
 onready var attackTimer = $AttackTimer
 onready var shootPosition = $Sprite/Position2D
 onready var visibility = $VisibilityNotifier2D
+onready var damagedStream = $DamagedStream
 var navigation : Navigation2D
 #
 var axis : Vector2
@@ -34,7 +35,7 @@ onready var rng = RandomNumberGenerator.new()
 onready var coin = preload("res://Objects/Player/Coins.tscn")
 onready var deadEnemy = preload("res://Objects/Enemies/DeadEnemy.tscn")
 onready var projectile = preload("res://Objects/Enemies/MageProjectile.tscn")
-
+onready var blood = preload("res://Objects/Misc/Particles/BloodParticles.tscn")
 #Mods
 export(float) var speedMod = 1
 
@@ -146,11 +147,21 @@ func TimedProcess():
 #Damage enemy and knock it
 func Damage(dam,dir):
 	if canReceiveDamage:
+		damagedStream.play()
 		health-=dam
 		#Die if necessary
 		if health <= 0:
+			var ins = blood.instance()
+			get_parent().add_child(ins)
+			ins.followTarget=false
+			ins.global_position=global_position
 			Die(dir)
 		else:
+			var ins = blood.instance()
+			get_parent().add_child(ins)
+			ins.followTarget=true
+			ins.target=self
+			ins.global_position=global_position
 			player.emit_signal("enemyDamaged",self)
 			canReceiveDamage=false
 			damageAgainTimer.start()
@@ -193,7 +204,7 @@ func DetectPlayerAndFollow():
 		$Line2D.points=path
 #Die, when dead, delete most of stuff
 func Die(direction):
-	player.emit_signal("enemyKilled",self)
+	player.emit_signal("enemyKilled",global_position)
 	state=dead
 	var ins = deadEnemy.instance()
 	ins.global_position=global_position
@@ -210,7 +221,7 @@ func Die(direction):
 #TODO, when enemy falls from arena
 func DieByFalling():
 	print("Enemy fell")
-	player.emit_signal("enemyKilled",self)
+	player.emit_signal("enemyKilled",global_position)
 	state=dead
 	var ins = deadEnemy.instance()
 	ins.global_position=global_position
@@ -240,7 +251,6 @@ func PrintState():
 		goingAround:
 			$Label.text="State: GoingAround"
 func Attack():
-	return
 	#Check for vision
 	if visibility.is_on_screen():
 		vision.cast_to=to_local(player.global_position)
