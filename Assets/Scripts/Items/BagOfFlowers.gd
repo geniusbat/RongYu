@@ -20,10 +20,12 @@ func ItemWasDeleted():
 func ItemIndexChanged(newCell):
 	pass
 
-func EnemyKilled(enemy):
+func EnemyKilled(enemyPos):
+	if enemyPos==null:
+		return
 	#Generate particles on enemy
 	var ins = flowerParticles.instance()
-	ins.global_position = enemy.global_position
+	ins.global_position = enemyPos
 	get_tree().get_root().add_child(ins)
 	bar.value+=2
 	#Max value, add coins

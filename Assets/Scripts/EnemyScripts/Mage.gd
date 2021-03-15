@@ -217,6 +217,9 @@ func Die(direction):
 	ins.get_node("CollisionShape2D").shape=$MovementCollision.shape
 	ins.dir=direction
 	get_parent().call_deferred("add_child",ins)
+	ins = coin.instance()
+	ins.global_position=global_position
+	get_parent().add_child(ins)
 	queue_free()
 #TODO, when enemy falls from arena
 func DieByFalling():
@@ -234,6 +237,9 @@ func DieByFalling():
 	ins.get_node("CollisionShape2D").shape=$MovementCollision.shape
 	ins.dir=Vector2.ZERO
 	get_parent().call_deferred("add_child",ins)
+	ins = coin.instance()
+	ins.global_position=global_position
+	get_parent().add_child(ins)
 	ins.Fall()
 	queue_free()
 #Get path towards global_position of point

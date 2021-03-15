@@ -128,7 +128,7 @@ func _unhandled_input(event):
 		#Add item
 		var instance = load("res://Objects/Items/FloorItemGeneric.tscn").instance()
 		add_child(instance)
-		instance.Create(load("res://Assets/Misc/ItemRes/Alcohol.tres"),false,Vector2.ZERO)
+		instance.Create(load("res://Assets/Misc/ItemRes/BagOfFlowers.tres"),false,Vector2.ZERO)
 		AddItem(instance)
 		#Add coins
 #		AddCoins(50)

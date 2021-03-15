@@ -3,7 +3,7 @@
 [ext_resource path="res://Objects/Enemies/Mage.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Objects/Misc/Arenas/ArenaNode.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Objects/Enemies/TestEnemy.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Objects/Misc/Torch.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Objects/Misc/Box.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Objects/Player/Player.tscn" type="PackedScene" id=5]
 [ext_resource path="res://NavPoligon.tres" type="NavigationPolygon" id=6]
 
@@ -11,8 +11,6 @@
 
 [node name="ArenaNode" parent="." instance=ExtResource( 2 )]
 listOfEnemies = [ ExtResource( 1 ), ExtResource( 1 ), ExtResource( 1 ), ExtResource( 3 ), ExtResource( 3 ), ExtResource( 3 ), ExtResource( 3 ), ExtResource( 3 ), ExtResource( 3 ), ExtResource( 3 ) ]
-entitiesSpawnOnEnd = true
-traderSpawnOnEnd = true
 
 [node name="YSort" type="YSort" parent="."]
 
@@ -25,5 +23,14 @@ navpoly = ExtResource( 6 )
 
 [node name="Player" parent="YSort" instance=ExtResource( 5 )]
 
-[node name="Torch" parent="YSort" instance=ExtResource( 4 )]
-position = Vector2( -106.38, -119.865 )
+[node name="Box" parent="." instance=ExtResource( 4 )]
+position = Vector2( 172.514, 94.671 )
+
+[node name="Box2" parent="." instance=ExtResource( 4 )]
+position = Vector2( 306.007, 78.779 )
+
+[node name="Box3" parent="." instance=ExtResource( 4 )]
+position = Vector2( 346.796, -8.62668 )
+
+[node name="Box4" parent="." instance=ExtResource( 4 )]
+position = Vector2( 324.018, -83.3188 )

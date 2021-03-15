@@ -34,5 +34,6 @@ func _on_Trader_area_entered(area):
 	label.visible=true
 	set_process_input(true)
 func _on_Trader_area_exited(area):
+	print("EXIT")
 	label.visible=false
 	set_process_input(false)

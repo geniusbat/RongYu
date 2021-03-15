@@ -33,7 +33,7 @@ func _ready():
 
 func TimedStep():
 	#Check if no more enemies, then spawn teleporter
-	if get_tree().get_nodes_in_group("Enemies").size()==0:
+	if get_tree().get_nodes_in_group("Enemies").size()==0 and teleporter.visible!=true:
 		ActivateTeleporter()
 
 func ActivateTeleporter():
@@ -46,6 +46,7 @@ func ActivateTeleporter():
 	if traderSpawnOnEnd:
 		trader.visible=true
 		trader.get_node("CollisionShape2D").disabled=false
+		trader.get_node("Label").visible=false
 
 #Deprecated
 func ChangeToNextArena():

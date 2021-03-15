@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Objects/Enemies/Boss.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Objects/Misc/Arenas/ArenaNode.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Objects/Player/Player.tscn" type="PackedScene" id=5]
+[ext_resource path="res://NavPoligon.tres" type="NavigationPolygon" id=6]
+
+[node name="Level" type="Node2D"]
+
+[node name="ArenaNode" parent="." instance=ExtResource( 2 )]
+listOfEnemies = [  ]
+
+[node name="YSort" type="YSort" parent="."]
+
+[node name="Navigation" type="Navigation2D" parent="YSort"]
+
+[node name="NavigationPolygonInstance" type="NavigationPolygonInstance" parent="YSort/Navigation"]
+visible = false
+position = Vector2( 0, 125.475 )
+navpoly = ExtResource( 6 )
+
+[node name="Boss" parent="YSort/Navigation" instance=ExtResource( 1 )]
+position = Vector2( 56.3528, -1.98425 )
+
+[node name="Player" parent="YSort" instance=ExtResource( 5 )]
+position = Vector2( -69.0314, 0 )

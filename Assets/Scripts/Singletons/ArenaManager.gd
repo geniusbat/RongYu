@@ -3,7 +3,7 @@ extends Node
 export(bool) var initialArea = true
 onready var musicVolume : float = 0
 onready var effectVolume : float = 0
-onready var arena = preload("res://Levels/test2.tscn")
+var arena
 onready var rng = RandomNumberGenerator.new()
 var levels : Array
 var arenaMusic : Array
@@ -20,6 +20,7 @@ func _init():
 	musicPlayer.bus="Music"
 
 func _ready():
+	levelNumber=0
 	rng.randomize()
 	var _a = musicPlayer.connect("finished",self,"MusicFinished")
 	#Set up possible music for arena battles
@@ -29,10 +30,13 @@ func _ready():
 	musicBus=AudioServer.get_bus_index("Music")
 	effectBus=AudioServer.get_bus_index("Master")
 	#Set up disponible levels
-#	levels.append(preload("res://Levels/test2.tscn"))
+	levels.append(preload("res://Levels/test2.tscn"))
 	levels.append(preload("res://Levels/test.tscn"))
-#	levels.append(preload("res://Levels/Level00.tscn"))
-#	levels.append(preload("res://Levels/Level01.tscn"))
+	levels.append(preload("res://Levels/Level00.tscn"))
+	levels.append(preload("res://Levels/Level01.tscn"))
+	levels.append(preload("res://Levels/Level02.tscn"))
+	levels.append(preload("res://Levels/Level03.tscn"))
+	levels.append(preload("res://Levels/Level04.tscn"))
 #	levels.append(preload())
 	
 
@@ -121,7 +125,7 @@ func LoadAndSpawnPlayer():
 
 #Call this to begin the game 
 func StartArena():
-	levelNumber+=1
+	levelNumber=1
 	var _a = get_tree().change_scene_to(preload("res://Levels/Intro.tscn"))
 	GetAndPlayRandomTrack()
 	initialArea=false
@@ -132,8 +136,12 @@ func ChangeArena():
 	get_tree().get_root().find_node("OutsideArena",true,false).count=false
 	FileManager.SavePlayer()
 	print_debug("Arena Changed")
+	#Spawn boss
+	if levelNumber==10:
+		arena=preload("res://Levels/BossLevel.tscn")
 	#select a random arena if necesary
-	arena=levels[rng.randi_range(0,levels.size()-1)]
+	else:
+		arena=levels[rng.randi_range(0,levels.size()-1)]
 	var _a = get_tree().change_scene_to(arena)
 	call_deferred("LoadAndSpawnPlayer")
 
