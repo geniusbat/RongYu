@@ -30,10 +30,10 @@ func Sell():
 	instance.Create(load("res://Assets/Misc/ItemRes/Skull.tres"),false,Vector2.ZERO)
 	player.AddItem(instance)
 
-func _on_Trader_area_entered(area):
+func _on_Trader_area_entered(_area):
 	label.visible=true
 	set_process_input(true)
-func _on_Trader_area_exited(area):
+func _on_Trader_area_exited(_area):
 	print("EXIT")
 	label.visible=false
 	set_process_input(false)

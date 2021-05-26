@@ -102,25 +102,26 @@ monitoring = false
 monitorable = false
 
 [node name="Entities" type="Node2D" parent="."]
-position = Vector2( 0, 824.078 )
+visible = false
+position = Vector2( 0, 800 )
 
 [node name="GreenFountain" parent="Entities" instance=ExtResource( 6 )]
-position = Vector2( -85.2867, -88.9948 )
+position = Vector2( -198.12, -44.1572 )
 entityRepresented = "Green"
 
 [node name="RedFountain" parent="Entities" instance=ExtResource( 6 )]
-position = Vector2( -40.2595, -88.9948 )
+position = Vector2( -123.259, -88.9948 )
 
 [node name="BlueFountain" parent="Entities" instance=ExtResource( 6 )]
-position = Vector2( 10.0649, -88.9948 )
+position = Vector2( -0.0433455, -106.184 )
 entityRepresented = "Blue"
 
 [node name="YellowFountain" parent="Entities" instance=ExtResource( 6 )]
-position = Vector2( 52.9731, -88.9948 )
+position = Vector2( 130.973, -88.9948 )
 entityRepresented = "Yellow"
 
 [node name="PurpleFountain" parent="Entities" instance=ExtResource( 6 )]
-position = Vector2( 91.6435, -88.9948 )
+position = Vector2( 229.903, -45.2167 )
 entityRepresented = "Purple"
 
 [node name="Trader" parent="." instance=ExtResource( 7 )]

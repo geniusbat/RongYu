@@ -21,6 +21,7 @@ navpoly = ExtResource( 6 )
 
 [node name="Boss" parent="YSort/Navigation" instance=ExtResource( 1 )]
 position = Vector2( 56.3528, -1.98425 )
+health = 10
 
 [node name="Player" parent="YSort" instance=ExtResource( 5 )]
 position = Vector2( -69.0314, 0 )
